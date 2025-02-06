@@ -17,22 +17,41 @@ export function _search(apiKey: string): TavilySearchFuncton {
       includeRawContent: false,
       includeDomains: undefined,
       excludeDomains: undefined,
-      maxTokens: undefined
+      maxTokens: undefined,
+      timeRange: undefined
     }
   ) {
+
+    const {
+      searchDepth,
+      topic,
+      days,
+      maxResults,
+      includeImages,
+      includeImageDescriptions,
+      includeAnswer,
+      includeRawContent,
+      includeDomains,
+      excludeDomains,
+      timeRange,
+      ...kwargs
+    } = options;
+
     const response = await post("search", {
       api_key: apiKey,
       query,
-      search_depth: options.searchDepth,
-      topic: options.topic,
-      days: options.days,
-      max_results: options.maxResults,
-      include_images: options.includeImages,
-      include_image_descriptions: options.includeImageDescriptions,
-      include_answer: options.includeAnswer,
-      include_raw_content: options.includeRawContent,
-      include_domains: options.includeDomains,
-      exclude_domains: options.excludeDomains,
+      search_depth: searchDepth,
+      topic: topic,
+      days: days,
+      max_results: maxResults,
+      include_images: includeImages,
+      include_image_descriptions: includeImageDescriptions,
+      include_answer: includeAnswer,
+      include_raw_content: includeRawContent,
+      include_domains: includeDomains,
+      exclude_domains: excludeDomains,
+      time_range: timeRange,
+      ...kwargs
     });
 
     return {
@@ -54,7 +73,7 @@ export function _search(apiKey: string): TavilySearchFuncton {
           publishedDate: result.published_date,
         };
       }),
-      answer: response.data.answer,
+      answer: response.data.answer
     };
   };
 }

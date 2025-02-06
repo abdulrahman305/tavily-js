@@ -4,7 +4,7 @@ export type TavilyQNASearchFuncton = (query: string, options: TavilySearchOption
 
 export type TavilyContextSearchFuncton = (query: string, options: TavilySearchOptions) => Promise<string>;
 
-export type TavilyExtractFunction = (urls: Array<string>) => Promise<TavilyExtractResponse>;
+export type TavilyExtractFunction = (urls: Array<string>, options: TavilyExtractOptions) => Promise<TavilyExtractResponse>;
 
 export type TavilyClient = {
   search: TavilySearchFuncton;
@@ -29,6 +29,8 @@ export type TavilySearchOptions = {
   includeDomains?: undefined | Array<string>;
   excludeDomains?: undefined | Array<string>;
   maxTokens?: undefined | number;
+  timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
+  [key: string]: any;
 };
 
 type TavilyImage = {
@@ -53,9 +55,16 @@ export type TavilySearchResponse = {
   results: Array<TavilySearchResult>;
 };
 
+export type TavilyExtractOptions = {
+  includeImages?: boolean;
+  extractDepth?: "basic" | "advanced";
+  [key: string]: any;
+}
+
 type TavilyExtractResult = {
   url: string;
   rawContent: string;
+  images?: Array<string>;
 };
 
 type TavilyExtractFailedResult = {
