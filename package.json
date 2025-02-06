@@ -1,10 +1,16 @@
 {
   "name": "@tavily/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Official JavaScript library for Tavily.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "homepage": "https://tavily.com",
   "repository": {
     "type": "git",
@@ -26,7 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.7.4",
-    "tsup": "^8.3.0",
+    "tsup": "^8.3.6",
     "typescript": "^5.6.2"
   },
   "dependencies": {
