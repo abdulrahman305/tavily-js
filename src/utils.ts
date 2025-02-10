@@ -7,10 +7,15 @@ export const DEFAULT_MAX_TOKENS = 4000;
 
 export async function post(
   endpoint: string,
-  body: any
+  body: any,
+  apiKey: string
 ): Promise<AxiosResponse> {
   const url = `${BASE_URL}/${endpoint}`;
-  return axios.post(url, body);
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${apiKey}`
+  };
+  return axios.post(url, body, { headers });
 }
 
 function getTotalTokensFromString(

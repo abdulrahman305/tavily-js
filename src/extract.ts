@@ -17,12 +17,11 @@ export function _extract(apiKey: string): TavilyExtractFunction {
     } = options;
 
     const response = await post("extract", {
-      api_key: apiKey,
       urls,
       include_images: includeImages,
       extract_depth: extractDepth,
       ...kwargs
-    });
+    }, apiKey);
 
     return {
       responseTime: response.data.response_time,
