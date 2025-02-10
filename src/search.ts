@@ -38,7 +38,6 @@ export function _search(apiKey: string): TavilySearchFuncton {
     } = options;
 
     const response = await post("search", {
-      api_key: apiKey,
       query,
       search_depth: searchDepth,
       topic: topic,
@@ -52,7 +51,7 @@ export function _search(apiKey: string): TavilySearchFuncton {
       exclude_domains: excludeDomains,
       time_range: timeRange,
       ...kwargs
-    });
+    }, apiKey);
 
     return {
       query,
@@ -96,7 +95,6 @@ export function _searchQNA(apiKey: string):  TavilyQNASearchFuncton {
     }
   ) {
     const response = await post("search", {
-      api_key: apiKey,
       query,
       search_depth: options.searchDepth,
       topic: options.topic,
@@ -108,7 +106,7 @@ export function _searchQNA(apiKey: string):  TavilyQNASearchFuncton {
       include_raw_content: false,
       include_domains: options.includeDomains,
       exclude_domains: options.excludeDomains,
-    });
+    }, apiKey);
 
     const answer = response.data.answer;
 
@@ -134,7 +132,6 @@ export function _searchContext(apiKey: string): TavilyContextSearchFuncton {
     }
   ) {
     const response = await post("search", {
-      api_key: apiKey,
       query,
       search_depth: options.searchDepth,
       topic: options.topic,
@@ -147,7 +144,7 @@ export function _searchContext(apiKey: string): TavilyContextSearchFuncton {
       include_domains: options.includeDomains,
       exclude_domains: options.excludeDomains,
       max_tokens: options.maxTokens
-    });
+    }, apiKey);
 
     const sources = response.data?.results || [];
 
