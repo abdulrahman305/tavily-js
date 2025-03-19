@@ -1,10 +1,22 @@
-export type TavilySearchFuncton = (query: string, options: TavilySearchOptions) => Promise<TavilySearchResponse>;
+export type TavilySearchFuncton = (
+  query: string,
+  options: TavilySearchOptions
+) => Promise<TavilySearchResponse>;
 
-export type TavilyQNASearchFuncton = (query: string, options: TavilySearchOptions) => Promise<string>;
+export type TavilyQNASearchFuncton = (
+  query: string,
+  options: TavilySearchOptions
+) => Promise<string>;
 
-export type TavilyContextSearchFuncton = (query: string, options: TavilySearchOptions) => Promise<string>;
+export type TavilyContextSearchFuncton = (
+  query: string,
+  options: TavilySearchOptions
+) => Promise<string>;
 
-export type TavilyExtractFunction = (urls: Array<string>, options: TavilyExtractOptions) => Promise<TavilyExtractResponse>;
+export type TavilyExtractFunction = (
+  urls: Array<string>,
+  options: TavilyExtractOptions
+) => Promise<TavilyExtractResponse>;
 
 export type TavilyClient = {
   search: TavilySearchFuncton;
@@ -30,6 +42,7 @@ export type TavilySearchOptions = {
   excludeDomains?: undefined | Array<string>;
   maxTokens?: undefined | number;
   timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
+  chunksPerSource?: undefined | number;
   [key: string]: any;
 };
 
@@ -59,7 +72,7 @@ export type TavilyExtractOptions = {
   includeImages?: boolean;
   extractDepth?: "basic" | "advanced";
   [key: string]: any;
-}
+};
 
 type TavilyExtractResult = {
   url: string;

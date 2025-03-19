@@ -4,6 +4,7 @@ import { encodingForModel, TiktokenModel } from "js-tiktoken";
 const BASE_URL = "https://api.tavily.com";
 const DEFAULT_MODEL_ENCODING = "gpt-3.5-turbo";
 export const DEFAULT_MAX_TOKENS = 4000;
+export const DEFAULT_CHUNKS_PER_SOURCE = 3;
 
 export async function post(
   endpoint: string,
@@ -12,8 +13,8 @@ export async function post(
 ): Promise<AxiosResponse> {
   const url = `${BASE_URL}/${endpoint}`;
   const headers = {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${apiKey}`
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
   };
   return axios.post(url, body, { headers });
 }
