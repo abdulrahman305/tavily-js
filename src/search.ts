@@ -14,7 +14,9 @@ import {
 export function _search(apiKey: string): TavilySearchFuncton {
   return async function search(
     query: string,
-    options: TavilySearchOptions = {
+    options: Partial<TavilySearchOptions> = {}
+  ) {
+    const defaultOptions: TavilySearchOptions = {
       searchDepth: "basic",
       topic: "general",
       days: 3,
@@ -28,8 +30,10 @@ export function _search(apiKey: string): TavilySearchFuncton {
       maxTokens: undefined,
       timeRange: undefined,
       chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
-    }
-  ) {
+    };
+
+    const mergedOptions = { ...defaultOptions, ...options };
+
     const {
       searchDepth,
       topic,
@@ -44,7 +48,7 @@ export function _search(apiKey: string): TavilySearchFuncton {
       timeRange,
       chunksPerSource,
       ...kwargs
-    } = options;
+    } = mergedOptions;
 
     const response = await post(
       "search",
