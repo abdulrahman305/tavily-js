@@ -18,11 +18,17 @@ export type TavilyExtractFunction = (
   options: TavilyExtractOptions
 ) => Promise<TavilyExtractResponse>;
 
+export type TavilyCrawlFunction = (
+  url: string,
+  options: TavilyCrawlOptions
+) => Promise<TavilyCrawlResponse>;
+
 export type TavilyClient = {
   search: TavilySearchFuncton;
   searchQNA: TavilyQNASearchFuncton;
   searchContext: TavilyContextSearchFuncton;
   extract: TavilyExtractFunction;
+  crawl: TavilyCrawlFunction;
 };
 
 export type TavilyClientOptions = {
@@ -89,4 +95,39 @@ export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
   responseTime: number;
+};
+
+export type TavilyCrawlOptions = {
+  url: string;
+  maxDepth?: number;
+  maxBreadth?: number;
+  limit?: number;
+  includeImages?: boolean;
+  useMapCache?: boolean;
+  useExtractCache?: boolean;
+  selectPaths?: string[] | null;
+  selectDomains?: string[] | null;
+  [key: string]: any;
+};
+
+export type TavilyCrawlResponse = {
+  success: boolean;
+  error?: string;
+  metadata: {
+    pagesCrawled: number;
+    maxDepthReached: number;
+    successfulUrls: number;
+    totalCredits: number;
+  };
+  config: {
+    baseUrl: string;
+    maxDepth: number;
+    maxBreadth: number;
+    includeImages: boolean;
+  };
+  data: Array<{
+    url: string;
+    rawContent: string;
+    images: Array<string>;
+  }>;
 };
