@@ -25,8 +25,14 @@ export type TavilyClient = {
   extract: TavilyExtractFunction;
 };
 
+export type TavilyProxyOptions = {
+  http?: string;
+  https?: string;
+};
+
 export type TavilyClientOptions = {
   apiKey?: string;
+  proxies?: TavilyProxyOptions;
 };
 
 export type TavilySearchOptions = {
