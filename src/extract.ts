@@ -14,9 +14,10 @@ export function _extract(
     options: TavilyExtractOptions = {
       includeImages: false,
       extractDepth: "basic",
+      timeout: 60,
     }
   ) {
-    const { includeImages, extractDepth, ...kwargs } = options;
+    const { includeImages, extractDepth, timeout, ...kwargs } = options;
 
     const response = await post(
       "extract",
@@ -27,7 +28,8 @@ export function _extract(
         ...kwargs,
       },
       apiKey,
-      proxies
+      proxies,
+      timeout ? Math.min(timeout, 120) : 60 // Max 120s, default to 60
     );
 
     return {
