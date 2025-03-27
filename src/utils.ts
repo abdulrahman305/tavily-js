@@ -12,7 +12,8 @@ export async function post(
   endpoint: string,
   body: any,
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  timeout: number = 60
 ): Promise<AxiosResponse> {
   const url = `${BASE_URL}/${endpoint}`;
   const headers = {
@@ -20,7 +21,9 @@ export async function post(
     Authorization: `Bearer ${apiKey}`,
   };
 
-  const config: AxiosRequestConfig = { headers };
+  const timeoutInMillis = timeout * 1000;
+
+  const config: AxiosRequestConfig = { headers, timeout: timeoutInMillis };
   if (proxies) {
     if (proxies.http) {
       config.httpAgent = new HttpsProxyAgent(proxies.http);

@@ -73,7 +73,8 @@ export function _search(
         ...kwargs,
       },
       apiKey,
-      proxies
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     return {
@@ -138,7 +139,8 @@ export function _searchQNA(
         chunks_per_source: options.chunksPerSource,
       },
       apiKey,
-      proxies
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     const answer = response.data.answer;
@@ -186,7 +188,8 @@ export function _searchContext(
         chunks_per_source: options.chunksPerSource,
       },
       apiKey,
-      proxies
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     const sources = response.data?.results || [];
