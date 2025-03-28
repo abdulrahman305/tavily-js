@@ -3,6 +3,7 @@ import {
   TavilySearchFuncton,
   TavilyQNASearchFuncton,
   TavilyContextSearchFuncton,
+  TavilyProxyOptions,
 } from "./types";
 import {
   post,
@@ -11,7 +12,10 @@ import {
   DEFAULT_CHUNKS_PER_SOURCE,
 } from "./utils";
 
-export function _search(apiKey: string): TavilySearchFuncton {
+export function _search(
+  apiKey: string,
+  proxies?: TavilyProxyOptions
+): TavilySearchFuncton {
   return async function search(
     query: string,
     options: Partial<TavilySearchOptions> = {}
@@ -68,7 +72,9 @@ export function _search(apiKey: string): TavilySearchFuncton {
         chunks_per_source: chunksPerSource,
         ...kwargs,
       },
-      apiKey
+      apiKey,
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     return {
@@ -95,7 +101,10 @@ export function _search(apiKey: string): TavilySearchFuncton {
   };
 }
 
-export function _searchQNA(apiKey: string): TavilyQNASearchFuncton {
+export function _searchQNA(
+  apiKey: string,
+  proxies?: TavilyProxyOptions
+): TavilyQNASearchFuncton {
   return async function searchQNA(
     query: string,
     options: TavilySearchOptions = {
@@ -129,7 +138,9 @@ export function _searchQNA(apiKey: string): TavilyQNASearchFuncton {
         exclude_domains: options.excludeDomains,
         chunks_per_source: options.chunksPerSource,
       },
-      apiKey
+      apiKey,
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     const answer = response.data.answer;
@@ -138,7 +149,10 @@ export function _searchQNA(apiKey: string): TavilyQNASearchFuncton {
   };
 }
 
-export function _searchContext(apiKey: string): TavilyContextSearchFuncton {
+export function _searchContext(
+  apiKey: string,
+  proxies?: TavilyProxyOptions
+): TavilyContextSearchFuncton {
   return async function searchContext(
     query: string,
     options: TavilySearchOptions = {
@@ -173,7 +187,9 @@ export function _searchContext(apiKey: string): TavilyContextSearchFuncton {
         max_tokens: options.maxTokens,
         chunks_per_source: options.chunksPerSource,
       },
-      apiKey
+      apiKey,
+      proxies,
+      options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
     );
 
     const sources = response.data?.results || [];
