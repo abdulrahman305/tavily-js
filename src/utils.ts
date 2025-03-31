@@ -70,9 +70,7 @@ export function handleRequestError(res: AxiosResponse): never {
         "Bad Request: The request was invalid or cannot be served."
       );
     case 401:
-      throw new Error(
-        "Unauthorized: Invalid API key or authentication failed."
-      );
+      throw new Error("Unauthorized: Invalid API key.");
     case 403:
       throw new Error(
         "Forbidden: You do not have permission to access this resource."
