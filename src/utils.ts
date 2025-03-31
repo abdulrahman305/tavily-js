@@ -8,6 +8,10 @@ const DEFAULT_MODEL_ENCODING = "gpt-3.5-turbo";
 export const DEFAULT_MAX_TOKENS = 4000;
 export const DEFAULT_CHUNKS_PER_SOURCE = 3;
 
+type TavilyErrorData = {
+  detail: { error: string };
+};
+
 export async function post(
   endpoint: string,
   body: any,
@@ -67,17 +71,17 @@ export function handleRequestError(res: AxiosResponse): never {
   switch (status) {
     case 400:
       throw new Error(
-        "Bad Request: The request was invalid or cannot be served."
+        `Bad Request: ${(res.data as TavilyErrorData).detail.error}`
       );
     case 401:
       throw new Error("Unauthorized: Invalid API key.");
     case 403:
       throw new Error(
-        "Forbidden: You do not have permission to access this resource."
+        `Forbidden: ${(res.data as TavilyErrorData).detail.error}`
       );
     case 429:
       throw new Error(
-        "Too Many Requests: You have exceeded the rate limit. Try again later."
+        `Too Many Requests: ${(res.data as TavilyErrorData).detail.error}`
       );
     default:
       throw new Error(`Unexpected Error: Received status code ${status}`);
