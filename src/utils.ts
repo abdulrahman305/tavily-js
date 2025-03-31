@@ -60,3 +60,28 @@ export function getMaxTokensFromList(
   }
   return JSON.stringify(result);
 }
+
+export function handleRequestError(res: AxiosResponse): never {
+  const status = res.status;
+
+  switch (status) {
+    case 400:
+      throw new Error(
+        "Bad Request: The request was invalid or cannot be served."
+      );
+    case 401:
+      throw new Error(
+        "Unauthorized: Invalid API key or authentication failed."
+      );
+    case 403:
+      throw new Error(
+        "Forbidden: You do not have permission to access this resource."
+      );
+    case 429:
+      throw new Error(
+        "Too Many Requests: You have exceeded the rate limit. Try again later."
+      );
+    default:
+      throw new Error(`Unexpected Error: Received status code ${status}`);
+  }
+}
