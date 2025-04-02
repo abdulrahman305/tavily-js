@@ -16,23 +16,27 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
       selectPaths: [],
       selectDomains: [],
       allowExternal: false,
-      categories: new Set(),
+      categories: [],
     };
 
     const mergedOptions = { ...defaultOptions, ...options };
 
-    const response = await post("crawl", {
-      url: mergedOptions.url,
-      max_depth: mergedOptions.maxDepth,
-      max_breadth: mergedOptions.maxBreadth,
-      include_images: mergedOptions.includeImages,
-      extract_depth: mergedOptions.extractDepth,
-      select_paths: mergedOptions.selectPaths,
-      select_domains: mergedOptions.selectDomains,
-      allow_external: mergedOptions.allowExternal,
-      categories: mergedOptions.categories ? Array.from(mergedOptions.categories) : [],
-      limit: mergedOptions.limit,
-    }, apiKey);
+    const response = await post(
+      "crawl",
+      {
+        url: mergedOptions.url,
+        max_depth: mergedOptions.maxDepth,
+        max_breadth: mergedOptions.maxBreadth,
+        limit: mergedOptions.limit,
+        include_images: mergedOptions.includeImages,
+        extract_depth: mergedOptions.extractDepth,
+        select_paths: mergedOptions.selectPaths,
+        select_domains: mergedOptions.selectDomains,
+        allow_external: mergedOptions.allowExternal,
+        categories: mergedOptions.categories,
+      },
+      apiKey
+    );
 
     return {
       success: response.data.success,
@@ -47,7 +51,12 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
         baseUrl: response.data.config.url,
         maxDepth: response.data.config.max_depth,
         maxBreadth: response.data.config.max_breadth,
+        limit: response.data.config.limit,
         includeImages: response.data.config.include_images,
+        selectPaths: response.data.config.select_paths,
+        selectDomains: response.data.config.select_domains,
+        allowExternal: response.data.config.allow_external,
+        categories: response.data.config.categories,
       },
       data: response.data.data.map((item: any) => {
         return {

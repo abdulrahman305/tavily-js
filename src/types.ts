@@ -123,7 +123,7 @@ export type TavilyCrawlOptions = {
   selectPaths?: string[] | null;
   selectDomains?: string[] | null;
   allowExternal?: boolean;
-  categories?: TavilyCrawlCategories | null;
+  categories?: TavilyCrawlCategory[] | null;
   [key: string]: any;
 };
 
