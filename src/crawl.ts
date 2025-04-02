@@ -12,8 +12,11 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
       maxBreadth: 20,
       limit: 100,
       includeImages: false,
+      extractDepth: "basic",
       selectPaths: [],
       selectDomains: [],
+      allowExternal: false,
+      categories: new Set(),
     };
 
     const mergedOptions = { ...defaultOptions, ...options };
@@ -27,7 +30,7 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
       select_paths: mergedOptions.selectPaths,
       select_domains: mergedOptions.selectDomains,
       allow_external: mergedOptions.allowExternal,
-      categories: mergedOptions.categories,
+      categories: mergedOptions.categories ? Array.from(mergedOptions.categories) : [],
       limit: mergedOptions.limit,
     }, apiKey);
 
