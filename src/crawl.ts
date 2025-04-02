@@ -8,14 +8,12 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
   ) {
     const defaultOptions: TavilyCrawlOptions = {
       url: url,
-      maxDepth: 3,
+      maxDepth: 2,
       maxBreadth: 20,
+      limit: 100,
       includeImages: false,
-      useMapCache: false,
-      useExtractCache: false,
-      selectPaths: null,
-      selectDomains: null,
-      limit: 500,
+      selectPaths: [],
+      selectDomains: [],
     };
 
     const mergedOptions = { ...defaultOptions, ...options };
@@ -25,10 +23,11 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
       max_depth: mergedOptions.maxDepth,
       max_breadth: mergedOptions.maxBreadth,
       include_images: mergedOptions.includeImages,
-      use_map_cache: mergedOptions.useMapCache,
-      use_extract_cache: mergedOptions.useExtractCache,
-      select_domains: mergedOptions.selectDomains,
+      extract_depth: mergedOptions.extractDepth,
       select_paths: mergedOptions.selectPaths,
+      select_domains: mergedOptions.selectDomains,
+      allow_external: mergedOptions.allowExternal,
+      categories: mergedOptions.categories,
       limit: mergedOptions.limit,
     }, apiKey);
 
@@ -42,7 +41,7 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
         totalCredits: response.data.metadata.total_credits,
       },
       config: {
-        baseUrl: response.data.config.base_url,
+        baseUrl: response.data.config.url,
         maxDepth: response.data.config.max_depth,
         maxBreadth: response.data.config.max_breadth,
         includeImages: response.data.config.include_images,

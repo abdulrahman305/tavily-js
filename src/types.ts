@@ -91,6 +91,22 @@ type TavilyExtractFailedResult = {
   error: string;
 };
 
+export type TavilyCrawlCategory = 
+  | "Documentation" 
+  | "Blog" 
+  | "About" 
+  | "Contact" 
+  | "Pricing" 
+  | "Careers"
+  | "E-Commerce"
+  | "Developers"
+  | "Partners"
+  | "Downloads"
+  | "Media"
+  | "Events"
+
+export type TavilyCrawlCategories = Set<TavilyCrawlCategory>;
+
 export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
@@ -103,10 +119,11 @@ export type TavilyCrawlOptions = {
   maxBreadth?: number;
   limit?: number;
   includeImages?: boolean;
-  useMapCache?: boolean;
-  useExtractCache?: boolean;
+  extractDepth?: "basic" | "advanced";
   selectPaths?: string[] | null;
   selectDomains?: string[] | null;
+  allowExternal?: boolean;
+  categories?: TavilyCrawlCategories | null;
   [key: string]: any;
 };
 
