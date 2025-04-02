@@ -17,7 +17,9 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
   })();
 
   if (!apiKey) {
-    throw new Error("No API key provided");
+    throw new Error(
+      "No API key provided. Please provide the api_key attribute or set the TAVILY_API_KEY environment variable."
+    );
   }
 
   return {

@@ -8,6 +8,10 @@ const DEFAULT_MODEL_ENCODING = "gpt-3.5-turbo";
 export const DEFAULT_MAX_TOKENS = 4000;
 export const DEFAULT_CHUNKS_PER_SOURCE = 3;
 
+type TavilyErrorData = {
+  detail: { error: string };
+};
+
 export async function post(
   endpoint: string,
   body: any,
@@ -59,4 +63,15 @@ export function getMaxTokensFromList(
     currentTokens = newTotalTokens;
   }
   return JSON.stringify(result);
+}
+
+export function handleRequestError(res: AxiosResponse): never {
+  const status = res.status;
+  const message = (res.data as TavilyErrorData)?.detail?.error;
+
+  if (!message) {
+    throw new Error(`${status} Error: ${JSON.stringify(res.data)}`);
+  }
+
+  throw new Error(`${(res.data as TavilyErrorData)?.detail?.error}`);
 }
