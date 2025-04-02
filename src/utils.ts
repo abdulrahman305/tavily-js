@@ -67,23 +67,11 @@ export function getMaxTokensFromList(
 
 export function handleRequestError(res: AxiosResponse): never {
   const status = res.status;
+  const message = (res.data as TavilyErrorData)?.detail?.error;
 
-  switch (status) {
-    case 400:
-      throw new Error(
-        `Bad Request: ${(res.data as TavilyErrorData).detail.error}`
-      );
-    case 401:
-      throw new Error("Unauthorized: Invalid API key.");
-    case 403:
-      throw new Error(
-        `Forbidden: ${(res.data as TavilyErrorData).detail.error}`
-      );
-    case 429:
-      throw new Error(
-        `Too Many Requests: ${(res.data as TavilyErrorData).detail.error}`
-      );
-    default:
-      throw new Error(`Unexpected Error: Received status code ${status}`);
+  if (!message) {
+    throw new Error(`${status} Error: ${JSON.stringify(res.data)}`);
   }
+
+  throw new Error(`${(res.data as TavilyErrorData)?.detail?.error}`);
 }
