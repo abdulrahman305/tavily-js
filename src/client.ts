@@ -28,6 +28,6 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
     extract: _extract(apiKey, proxies),
     searchQNA: _searchQNA(apiKey, proxies),
     searchContext: _searchContext(apiKey, proxies),
-    crawl: _crawl(apiKey),
+    crawl: _crawl(apiKey, proxies),
   };
 }
