@@ -31,8 +31,14 @@ export type TavilyClient = {
   crawl: TavilyCrawlFunction;
 };
 
+export type TavilyProxyOptions = {
+  http?: string;
+  https?: string;
+};
+
 export type TavilyClientOptions = {
   apiKey?: string;
+  proxies?: TavilyProxyOptions;
 };
 
 export type TavilySearchOptions = {
@@ -49,6 +55,7 @@ export type TavilySearchOptions = {
   maxTokens?: undefined | number;
   timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
   chunksPerSource?: undefined | number;
+  timeout?: number;
   [key: string]: any;
 };
 
@@ -77,6 +84,7 @@ export type TavilySearchResponse = {
 export type TavilyExtractOptions = {
   includeImages?: boolean;
   extractDepth?: "basic" | "advanced";
+  timeout?: number;
   [key: string]: any;
 };
 

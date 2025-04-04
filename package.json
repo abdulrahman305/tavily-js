@@ -1,6 +1,6 @@
 {
   "name": "@tavily/core",
-  "version": "0.3.3",
+  "version": "0.3.5",
   "description": "Official JavaScript library for Tavily.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "https-proxy-agent": "^7.0.6",
     "js-tiktoken": "^1.0.14"
   }
 }
