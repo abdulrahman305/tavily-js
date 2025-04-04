@@ -46,6 +46,7 @@ export function _crawl(apiKey: string): TavilyCrawlFunction {
         maxDepthReached: response.data.metadata.max_depth_reached,
         successfulUrls: response.data.metadata.successful_urls,
         totalCredits: response.data.metadata.total_credits,
+        crawlOutcome: response.data.metadata.crawl_outcome,
       },
       config: {
         baseUrl: response.data.config.url,
