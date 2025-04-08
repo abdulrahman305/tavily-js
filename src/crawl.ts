@@ -50,27 +50,9 @@ export function _crawl(
       );
 
       return {
-        success: response.data.success,
-        ...(response.data.error ? { error: response.data.error } : {}),
-        metadata: {
-          pagesCrawled: response.data.metadata.pages_crawled,
-          maxDepthReached: response.data.metadata.max_depth_reached,
-          successfulUrls: response.data.metadata.successful_urls,
-          totalCredits: response.data.metadata.total_credits,
-          crawlOutcome: response.data.metadata.crawl_outcome,
-        },
-        config: {
-          baseUrl: response.data.config.url,
-          maxDepth: response.data.config.max_depth,
-          maxBreadth: response.data.config.max_breadth,
-          limit: response.data.config.limit,
-          includeImages: response.data.config.include_images,
-          selectPaths: response.data.config.select_paths,
-          selectDomains: response.data.config.select_domains,
-          allowExternal: response.data.config.allow_external,
-          categories: response.data.config.categories,
-        },
-        data: response.data.data.map((item: any) => {
+        responseTime: response.data.response_time,
+        baseUrl: response.data.base_url,
+        results: response.data.results.map((item: any) => {
           return {
             url: item.url,
             rawContent: item.raw_content,

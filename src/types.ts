@@ -99,19 +99,19 @@ type TavilyExtractFailedResult = {
   error: string;
 };
 
-export type TavilyCrawlCategory = 
-  | "Documentation" 
-  | "Blog" 
-  | "About" 
-  | "Contact" 
-  | "Pricing" 
+export type TavilyCrawlCategory =
+  | "Documentation"
+  | "Blog"
+  | "About"
+  | "Contact"
+  | "Pricing"
   | "Careers"
   | "E-Commerce"
   | "Developers"
   | "Partners"
   | "Downloads"
   | "Media"
-  | "Events"
+  | "Events";
 
 export type TavilyCrawlCategories = Set<TavilyCrawlCategory>;
 
@@ -136,21 +136,9 @@ export type TavilyCrawlOptions = {
 };
 
 export type TavilyCrawlResponse = {
-  success: boolean;
-  error?: string;
-  metadata: {
-    pagesCrawled: number;
-    maxDepthReached: number;
-    successfulUrls: number;
-    totalCredits: number;
-  };
-  config: {
-    baseUrl: string;
-    maxDepth: number;
-    maxBreadth: number;
-    includeImages: boolean;
-  };
-  data: Array<{
+  responseTime: number;
+  baseUrl: string;
+  results: Array<{
     url: string;
     rawContent: string;
     images: Array<string>;
