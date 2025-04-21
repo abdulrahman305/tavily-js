@@ -127,7 +127,6 @@ export type TavilyCrawlOptions = {
   maxBreadth?: number;
   limit?: number;
   query?: string | null;
-  includeImages?: boolean;
   extractDepth?: "basic" | "advanced";
   selectPaths?: string[] | null;
   selectDomains?: string[] | null;
