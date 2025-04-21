@@ -16,15 +16,16 @@ export function _crawl(
   ) {
     const defaultOptions: TavilyCrawlOptions = {
       url: url,
-      maxDepth: 2,
+      maxDepth: 1,
       maxBreadth: 20,
-      limit: 100,
+      limit: 50,
       includeImages: false,
       extractDepth: "basic",
-      selectPaths: [],
-      selectDomains: [],
+      selectPaths: null,
+      selectDomains: null,
       allowExternal: false,
-      categories: [],
+      categories: null,
+      query: null,
     };
 
     const mergedOptions = { ...defaultOptions, ...options };
@@ -43,6 +44,7 @@ export function _crawl(
           select_domains: mergedOptions.selectDomains,
           allow_external: mergedOptions.allowExternal,
           categories: mergedOptions.categories,
+          query: mergedOptions.query,
         },
         apiKey,
         proxies,
