@@ -18,11 +18,17 @@ export type TavilyExtractFunction = (
   options: TavilyExtractOptions
 ) => Promise<TavilyExtractResponse>;
 
+export type TavilyCrawlFunction = (
+  url: string,
+  options: TavilyCrawlOptions
+) => Promise<TavilyCrawlResponse>;
+
 export type TavilyClient = {
   search: TavilySearchFuncton;
   searchQNA: TavilyQNASearchFuncton;
   searchContext: TavilyContextSearchFuncton;
   extract: TavilyExtractFunction;
+  crawl: TavilyCrawlFunction;
 };
 
 export type TavilyProxyOptions = {
@@ -93,8 +99,48 @@ type TavilyExtractFailedResult = {
   error: string;
 };
 
+export type TavilyCrawlCategory =
+  | "Documentation"
+  | "Blog"
+  | "About"
+  | "Contact"
+  | "Pricing"
+  | "Careers"
+  | "E-Commerce"
+  | "Developers"
+  | "Partners"
+  | "Downloads"
+  | "Media"
+  | "Events";
+
+export type TavilyCrawlCategories = Set<TavilyCrawlCategory>;
+
 export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
   responseTime: number;
+};
+
+export type TavilyCrawlOptions = {
+  url: string;
+  maxDepth?: number;
+  maxBreadth?: number;
+  limit?: number;
+  query?: string | null;
+  extractDepth?: "basic" | "advanced";
+  selectPaths?: string[] | null;
+  selectDomains?: string[] | null;
+  allowExternal?: boolean;
+  categories?: TavilyCrawlCategory[] | null;
+  [key: string]: any;
+};
+
+export type TavilyCrawlResponse = {
+  responseTime: number;
+  baseUrl: string;
+  results: Array<{
+    url: string;
+    rawContent: string;
+    images: Array<string>;
+  }>;
 };
