@@ -92,8 +92,6 @@ response.results.forEach(({ url, raw_content }) => {
   console.log(`URL: ${url}`);
   console.log(`Raw Content: ${raw_content}\n`);
 });
-
-// Note that URLs that could not be extracted will be stored in response.failedResults
 ```
 
 > To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
