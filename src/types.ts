@@ -23,12 +23,18 @@ export type TavilyCrawlFunction = (
   options: TavilyCrawlOptions
 ) => Promise<TavilyCrawlResponse>;
 
+export type TavilyMapFunction = (
+  url: string,
+  options: TavilyMapOptions
+) => Promise<TavilyMapResponse>;
+
 export type TavilyClient = {
   search: TavilySearchFuncton;
   searchQNA: TavilyQNASearchFuncton;
   searchContext: TavilyContextSearchFuncton;
   extract: TavilyExtractFunction;
   crawl: TavilyCrawlFunction;
+  map: TavilyMapFunction;
 };
 
 export type TavilyProxyOptions = {
@@ -122,16 +128,16 @@ export type TavilyExtractResponse = {
 };
 
 export type TavilyCrawlOptions = {
-  url: string;
-  maxDepth?: number;
-  maxBreadth?: number;
-  limit?: number;
-  query?: string | null;
-  extractDepth?: "basic" | "advanced";
-  selectPaths?: string[] | null;
-  selectDomains?: string[] | null;
-  allowExternal?: boolean;
-  categories?: TavilyCrawlCategory[] | null;
+  maxDepth: number;
+  maxBreadth: number;
+  limit: number;
+  query: string;
+  extractDepth: "basic" | "advanced";
+  selectPaths: string[];
+  selectDomains: string[];
+  allowExternal: boolean;
+  categories: TavilyCrawlCategory[];
+  timeout: number;
   [key: string]: any;
 };
 
@@ -144,3 +150,22 @@ export type TavilyCrawlResponse = {
     images: Array<string>;
   }>;
 };
+
+export type TavilyMapOptions = {
+  limit: number;
+  maxDepth: number;
+  maxBreadth: number;
+  selectPaths: string[];
+  selectDomains: string[];
+  categories: TavilyCrawlCategory[];
+  allowExternal: boolean;
+  query: string;
+  timeout: number;
+  [key: string]: any;
+}
+
+export type TavilyMapResponse = {
+  responseTime: number;
+  baseUrl: string;
+  results: string[];
+}
