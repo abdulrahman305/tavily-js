@@ -136,6 +136,7 @@ export type TavilyCrawlOptions = {
   selectPaths: string[];
   selectDomains: string[];
   allowExternal: boolean;
+  includeImages: boolean;
   categories: TavilyCrawlCategory[];
   timeout: number;
   [key: string]: any;
