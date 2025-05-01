@@ -27,6 +27,7 @@ export function _crawl(
           select_paths: options.selectPaths,
           select_domains: options.selectDomains,
           allow_external: options.allowExternal,
+          include_images: options.includeImages,
           categories: options.categories,
           query: options.query,
         },
