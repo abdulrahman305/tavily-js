@@ -59,15 +59,15 @@ response = await tvly.extract(urls);
 
 // Step 4. Printing the extracted raw content
 for (let result of response.results) {
-  console.log(`URL: ${result["url"]}`);
-  console.log(`Raw Content: ${result["raw_content"]}\n`);
+  console.log(`URL: ${result.url}`);
+  console.log(`Raw Content: ${result.rawContent}\n`);
 }
 // Note that URLs that could not be extracted will be stored in response.failedResults
 ```
 
 > To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
 
-# Tavily Crawl (Currently in Invitational Beta)
+# Tavily Crawl (Open-Access Beta)
 
 Tavily Crawl is an agent‐first site explorer that leverages breadth‐first crawling to navigate websites. It uses natural-language goals to intelligently uncover deeply buried “needle-in-a-haystack” information or perform high-volume data retrieval across an entire site.
 
@@ -78,23 +78,61 @@ Below is a simple code snippet demonstrating how to use Tavily Crawl. The differ
 ```javascript
 const { tavily } = require("@tavily/core");
 
-// Step 1. Instantiating your TavilyClient
+// Step 1. Instantiating your Tavily client
 const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
 
 // Step 2. Defining the starting URL to crawl
-const base_url = "https://en.wikipedia.org/wiki/Artificial_intelligence"
+const start_url = "https://wikipedia.org/wiki/Lemon"
 
-// Step 3. Executing the extract request
-response = await tvly.crawl(urls);
-
-// Step 4. Printing the extracted raw content
-response.results.forEach(({ url, raw_content }) => {
-  console.log(`URL: ${url}`);
-  console.log(`Raw Content: ${raw_content}\n`);
+// Step 3. Executing the crawl request with instructions to surface only pages about citrus fruits
+response = await tvly.crawl(start_url, {
+  max_depth: 3,
+  limit: 50,
+  instructions: "Find all pages on citrus fruits"
 });
+
+// Step 4. Printing pages matching the query
+for (let result of response.results) {
+  console.log(`URL: ${result.url}`);
+  console.log(`Raw Content: ${result.rawContent.substring(0, 200)}...`);
+}
+```
+
+# Tavily Map (Open-Access Beta)
+
+Map lets you discover and visualize the structure of a website starting from a base URL.
+
+## Usage
+
+Below are some code snippets that demonstrate how to interact with our Map API. Each step and component of this code is explained in greater detail in the API Methods section below.
+
+### Mapping a website with instructions
+
+```javascript
+const { tavily } = require("@tavily/core");
+
+// Step 1. Instantiating your Tavily client
+const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
+
+// Step 2. Defining the starting URL
+const start_url = "https://wikipedia.org/wiki/Lemon"
+
+// Step 3. Executing the map request with parameters to focus on specific pages
+response = await tvly.map(start_url, {
+  max_depth: 3,
+  limit: 50,
+  instructions: "Find all pages on citrus fruits"
+});
+
+// Step 4. Printing the site structure
+for (let url of response.results) {
+  console.log(`URl: ${url}`);
+}
 ```
 
 > To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
+
+# Additional Information
 
 ## Proxies
 
