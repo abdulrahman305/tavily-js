@@ -108,16 +108,26 @@ type TavilyExtractFailedResult = {
 export type TavilyCrawlCategory =
   | "Documentation"
   | "Blog"
+  | "Blogs"
+  | "Community"
   | "About"
   | "Contact"
+  | "Privacy"
+  | "Terms"
+  | "Status"
   | "Pricing"
+  | "Enterprise"
   | "Careers"
   | "E-Commerce"
+  | "Authentication"
+  | "Developer"
   | "Developers"
+  | "Solutions"
   | "Partners"
   | "Downloads"
   | "Media"
-  | "Events";
+  | "Events"
+  | "People";
 
 export type TavilyCrawlCategories = Set<TavilyCrawlCategory>;
 
@@ -131,10 +141,12 @@ export type TavilyCrawlOptions = {
   maxDepth: number;
   maxBreadth: number;
   limit: number;
-  query: string;
+  instructions: string;
   extractDepth: "basic" | "advanced";
   selectPaths: string[];
   selectDomains: string[];
+  excludePaths: string[];
+  excludeDomains: string[];
   allowExternal: boolean;
   includeImages: boolean;
   categories: TavilyCrawlCategory[];
@@ -158,9 +170,11 @@ export type TavilyMapOptions = {
   maxBreadth: number;
   selectPaths: string[];
   selectDomains: string[];
+  excludePaths: string[];
+  excludeDomains: string[];
   categories: TavilyCrawlCategory[];
   allowExternal: boolean;
-  query: string;
+  instructions: string;
   timeout: number;
   [key: string]: any;
 }

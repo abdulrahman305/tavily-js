@@ -14,19 +14,37 @@ export function _map(
     url: string,
     options: Partial<TavilyMapOptions> = {}
   ) {
+
+    const {
+      maxDepth,
+      maxBreadth,
+      limit,
+      selectPaths,
+      selectDomains,
+      excludePaths,
+      excludeDomains,
+      allowExternal,
+      categories,
+      instructions,
+      ...kwargs
+    } = options;
+
     try {
       const response = await post(
         "map",
         {
           url: url,
-          max_depth: options.maxDepth,
-          max_breadth: options.maxBreadth,
-          limit: options.limit,
-          select_paths: options.selectPaths,
-          select_domains: options.selectDomains,
-          allow_external: options.allowExternal,
-          categories: options.categories,
-          query: options.query,
+          max_depth: maxDepth,
+          max_breadth: maxBreadth,
+          limit: limit,
+          select_paths: selectPaths,
+          select_domains: selectDomains,
+          exclude_paths: excludePaths,
+          exclude_domains: excludeDomains,
+          allow_external: allowExternal,
+          categories: categories,
+          instructions: instructions,
+          ...kwargs
         },
         apiKey,
         proxies,
