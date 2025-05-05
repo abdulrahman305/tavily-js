@@ -15,21 +15,40 @@ export function _crawl(
     options: Partial<TavilyCrawlOptions> = {}
   ) {
 
+    const {
+      maxDepth,
+      maxBreadth,
+      limit,
+      extractDepth,
+      selectPaths,
+      selectDomains,
+      excludePaths,
+      excludeDomains,
+      allowExternal,
+      includeImages,
+      categories,
+      instructions,
+      ...kwargs
+    } = options;
+    
     try {
       const response = await post(
         "crawl",
         {
           url: url,
-          max_depth: options.maxDepth,
-          max_breadth: options.maxBreadth,
-          limit: options.limit,
-          extract_depth: options.extractDepth,
-          select_paths: options.selectPaths,
-          select_domains: options.selectDomains,
-          allow_external: options.allowExternal,
-          include_images: options.includeImages,
-          categories: options.categories,
-          query: options.query,
+          max_depth: maxDepth,
+          max_breadth: maxBreadth,
+          limit: limit,
+          extract_depth: extractDepth,
+          select_paths: selectPaths,
+          select_domains: selectDomains,
+          exclude_paths: excludePaths,
+          exclude_domains: excludeDomains,
+          allow_external: allowExternal,
+          include_images: includeImages,
+          categories: categories,
+          instructions: instructions,
+          ...kwargs
         },
         apiKey,
         proxies,
