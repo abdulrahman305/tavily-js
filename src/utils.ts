@@ -75,3 +75,7 @@ export function handleRequestError(res: AxiosResponse): never {
 
   throw new Error(`${(res.data as TavilyErrorData)?.detail?.error}`);
 }
+
+export function handleTimeoutError(timeout: number): never {
+  throw new Error(`Request timed out after ${timeout} seconds.`);
+}
