@@ -4,7 +4,7 @@ import {
   TavilyExtractFunction,
   TavilyProxyOptions,
 } from "./types";
-import { handleRequestError, post } from "./utils";
+import { handleRequestError, handleTimeoutError, post } from "./utils";
 
 export function _extract(
   apiKey: string,
@@ -18,7 +18,10 @@ export function _extract(
       timeout: 60,
     }
   ) {
-    const { includeImages, extractDepth, timeout, ...kwargs } = options;
+    const { includeImages, extractDepth, ...kwargs } = options;
+    let { timeout } = options;
+
+    timeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
 
     try {
       const response = await post(
@@ -31,7 +34,7 @@ export function _extract(
         },
         apiKey,
         proxies,
-        timeout ? Math.min(timeout, 120) : 60 // Max 120s, default to 60
+        timeout
       );
 
       return {
@@ -51,13 +54,17 @@ export function _extract(
         }),
       };
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
-        handleRequestError(err.response as AxiosResponse);
-      } else {
-        throw new Error(
-          `An unexpected error occurred while making the request. Error: ${err}`
-        );
+      if (err instanceof AxiosError) {
+        if (err.code === "ECONNABORTED") {
+          handleTimeoutError(timeout);
+        }
+        if (err.response) {
+          handleRequestError(err.response as AxiosResponse);
+        }
       }
+      throw new Error(
+        `An unexpected error occurred while making the request. Error: ${err}`
+      );
     }
   };
 }

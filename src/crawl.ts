@@ -3,7 +3,7 @@ import {
   TavilyCrawlFunction,
   TavilyProxyOptions,
 } from "./types";
-import { post, handleRequestError } from "./utils";
+import { post, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
 
 export function _crawl(
@@ -14,7 +14,6 @@ export function _crawl(
     url: string,
     options: Partial<TavilyCrawlOptions> = {}
   ) {
-
     const {
       maxDepth,
       maxBreadth,
@@ -30,7 +29,8 @@ export function _crawl(
       instructions,
       ...kwargs
     } = options;
-    
+    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+
     try {
       const response = await post(
         "crawl",
@@ -48,11 +48,11 @@ export function _crawl(
           include_images: includeImages,
           categories: categories,
           instructions: instructions,
-          ...kwargs
+          ...kwargs,
         },
         apiKey,
         proxies,
-        options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
+        timeout
       );
 
       return {
@@ -67,13 +67,17 @@ export function _crawl(
         }),
       };
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
-        handleRequestError(err.response as AxiosResponse);
-      } else {
-        throw new Error(
-          `An unexpected error occurred while making the request. Error: ${err}`
-        );
+      if (err instanceof AxiosError) {
+        if (err.code === "ECONNABORTED") {
+          handleTimeoutError(timeout);
+        }
+        if (err.response) {
+          handleRequestError(err.response as AxiosResponse);
+        }
       }
+      throw new Error(
+        `An unexpected error occurred while making the request. Error: ${err}`
+      );
     }
   };
 }

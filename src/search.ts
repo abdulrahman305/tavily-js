@@ -12,6 +12,7 @@ import {
   getMaxTokensFromList,
   DEFAULT_CHUNKS_PER_SOURCE,
   handleRequestError,
+  handleTimeoutError,
 } from "./utils";
 
 export function _search(
@@ -55,6 +56,9 @@ export function _search(
       chunksPerSource,
       ...kwargs
     } = mergedOptions;
+
+    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+
     try {
       const response = await post(
         "search",
@@ -76,7 +80,7 @@ export function _search(
         },
         apiKey,
         proxies,
-        options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
+        timeout
       );
 
       return {
@@ -101,13 +105,17 @@ export function _search(
         answer: response.data.answer,
       };
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
-        handleRequestError(err.response as AxiosResponse);
-      } else {
-        throw new Error(
-          `An unexpected error occurred while making the request. Error: ${err}`
-        );
+      if (err instanceof AxiosError) {
+        if (err.code === "ECONNABORTED") {
+          handleTimeoutError(timeout);
+        }
+        if (err.response) {
+          handleRequestError(err.response as AxiosResponse);
+        }
       }
+      throw new Error(
+        `An unexpected error occurred while making the request. Error: ${err}`
+      );
     }
   };
 }
@@ -133,6 +141,8 @@ export function _searchQNA(
       chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
     }
   ) {
+    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+
     try {
       const response = await post(
         "search",
@@ -152,20 +162,24 @@ export function _searchQNA(
         },
         apiKey,
         proxies,
-        options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
+        timeout
       );
 
       const answer = response.data.answer;
 
       return answer;
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
-        handleRequestError(err.response as AxiosResponse);
-      } else {
-        throw new Error(
-          `An unexpected error occurred while making the request. Error: ${err}`
-        );
+      if (err instanceof AxiosError) {
+        if (err.code === "ECONNABORTED") {
+          handleTimeoutError(timeout);
+        }
+        if (err.response) {
+          handleRequestError(err.response as AxiosResponse);
+        }
       }
+      throw new Error(
+        `An unexpected error occurred while making the request. Error: ${err}`
+      );
     }
   };
 }
@@ -191,6 +205,8 @@ export function _searchContext(
       chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
     }
   ) {
+    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+
     try {
       const response = await post(
         "search",
@@ -211,7 +227,7 @@ export function _searchContext(
         },
         apiKey,
         proxies,
-        options?.timeout ? Math.min(options.timeout, 120) : 60 // Max 120s, default to 60
+        timeout
       );
 
       const sources = response.data?.results || [];
@@ -225,13 +241,17 @@ export function _searchContext(
 
       return JSON.stringify(getMaxTokensFromList(context, options.maxTokens));
     } catch (err) {
-      if (err instanceof AxiosError && err.response) {
-        handleRequestError(err.response as AxiosResponse);
-      } else {
-        throw new Error(
-          `An unexpected error occurred while making the request. Error: ${err}`
-        );
+      if (err instanceof AxiosError) {
+        if (err.code === "ECONNABORTED") {
+          handleTimeoutError(timeout);
+        }
+        if (err.response) {
+          handleRequestError(err.response as AxiosResponse);
+        }
       }
+      throw new Error(
+        `An unexpected error occurred while making the request. Error: ${err}`
+      );
     }
   };
 }
