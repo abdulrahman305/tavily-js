@@ -12,7 +12,7 @@ export function _crawl(
 ): TavilyCrawlFunction {
   return async function crawl(
     url: string,
-    options: Partial<TavilyCrawlOptions> = {}
+    options: Partial<TavilyCrawlOptions>
   ) {
     const {
       maxDepth,
@@ -27,9 +27,12 @@ export function _crawl(
       includeImages,
       categories,
       instructions,
+      format,
+      timeout,
       ...kwargs
     } = options;
-    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+
+    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
 
     try {
       const response = await post(
@@ -38,7 +41,7 @@ export function _crawl(
           url: url,
           max_depth: maxDepth,
           max_breadth: maxBreadth,
-          limit: limit,
+          limit,
           extract_depth: extractDepth,
           select_paths: selectPaths,
           select_domains: selectDomains,
@@ -46,13 +49,14 @@ export function _crawl(
           exclude_domains: excludeDomains,
           allow_external: allowExternal,
           include_images: includeImages,
-          categories: categories,
-          instructions: instructions,
+          categories,
+          instructions,
+          format,
           ...kwargs,
         },
         apiKey,
         proxies,
-        timeout
+        requestTimeout
       );
 
       return {
@@ -69,7 +73,7 @@ export function _crawl(
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.code === "ECONNABORTED") {
-          handleTimeoutError(timeout);
+          handleTimeoutError(requestTimeout);
         }
         if (err.response) {
           handleRequestError(err.response as AxiosResponse);
