@@ -37,6 +37,7 @@ export function _search(
       maxTokens: undefined,
       timeRange: undefined,
       chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
+      country: undefined,
     };
 
     const mergedOptions = { ...defaultOptions, ...options };
@@ -54,6 +55,7 @@ export function _search(
       excludeDomains,
       timeRange,
       chunksPerSource,
+      country,
       ...kwargs
     } = mergedOptions;
 
@@ -76,6 +78,7 @@ export function _search(
           exclude_domains: excludeDomains,
           time_range: timeRange,
           chunks_per_source: chunksPerSource,
+          country: country,
           ...kwargs,
         },
         apiKey,
