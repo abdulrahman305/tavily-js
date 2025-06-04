@@ -12,7 +12,7 @@ export function _crawl(
 ): TavilyCrawlFunction {
   return async function crawl(
     url: string,
-    options: Partial<TavilyCrawlOptions>
+    options: Partial<TavilyCrawlOptions> = {}
   ) {
     const {
       maxDepth,
