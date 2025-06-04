@@ -12,7 +12,7 @@ export function _extract(
 ): TavilyExtractFunction {
   return async function extract(
     urls: Array<string>,
-    options: Partial<TavilyExtractOptions>
+    options: Partial<TavilyExtractOptions> = {}
   ) {
     const { includeImages, extractDepth, format, timeout, ...kwargs } = options;
 

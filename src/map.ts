@@ -10,7 +10,10 @@ export function _map(
   apiKey: string,
   proxies?: TavilyProxyOptions
 ): TavilyMapFunction {
-  return async function map(url: string, options: Partial<TavilyMapOptions>) {
+  return async function map(
+    url: string,
+    options: Partial<TavilyMapOptions> = {}
+  ) {
     const {
       maxDepth,
       maxBreadth,

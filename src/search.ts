@@ -21,7 +21,7 @@ export function _search(
 ): TavilySearchFuncton {
   return async function search(
     query: string,
-    options: Partial<TavilySearchOptions>
+    options: Partial<TavilySearchOptions> = {}
   ) {
     const {
       searchDepth,
@@ -109,7 +109,10 @@ export function _searchQNA(
   apiKey: string,
   proxies?: TavilyProxyOptions
 ): TavilyQNASearchFuncton {
-  return async function searchQNA(query: string, options: TavilySearchOptions) {
+  return async function searchQNA(
+    query: string,
+    options: TavilySearchOptions = {}
+  ) {
     const requestTimeout = options?.timeout
       ? Math.min(options.timeout, 120)
       : 60; // Max 120s, default to 60
@@ -158,7 +161,7 @@ export function _searchContext(
 ): TavilyContextSearchFuncton {
   return async function searchContext(
     query: string,
-    options: TavilySearchOptions
+    options: TavilySearchOptions = {}
   ) {
     const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
 
