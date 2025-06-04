@@ -56,11 +56,12 @@ export type TavilySearchOptions = {
   includeImageDescriptions?: boolean;
   includeAnswer?: boolean;
   includeRawContent?: boolean;
-  includeDomains?: undefined | Array<string>;
-  excludeDomains?: undefined | Array<string>;
-  maxTokens?: undefined | number;
+  includeDomains?: string[];
+  excludeDomains?: string[];
+  maxTokens?: number;
   timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
-  chunksPerSource?: undefined | number;
+  chunksPerSource?: number;
+  country?: string;
   timeout?: number;
   [key: string]: any;
 };
@@ -177,10 +178,10 @@ export type TavilyMapOptions = {
   instructions: string;
   timeout: number;
   [key: string]: any;
-}
+};
 
 export type TavilyMapResponse = {
   responseTime: number;
   baseUrl: string;
   results: string[];
-}
+};
