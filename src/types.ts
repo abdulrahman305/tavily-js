@@ -55,7 +55,7 @@ export type TavilySearchOptions = {
   includeImages?: boolean;
   includeImageDescriptions?: boolean;
   includeAnswer?: boolean;
-  includeRawContent?: boolean;
+  includeRawContent?: false | "markdown" | "text";
   includeDomains?: string[];
   excludeDomains?: string[];
   maxTokens?: number;
@@ -91,6 +91,7 @@ export type TavilySearchResponse = {
 export type TavilyExtractOptions = {
   includeImages?: boolean;
   extractDepth?: "basic" | "advanced";
+  format?: "markdown" | "text";
   timeout?: number;
   [key: string]: any;
 };
@@ -139,19 +140,20 @@ export type TavilyExtractResponse = {
 };
 
 export type TavilyCrawlOptions = {
-  maxDepth: number;
-  maxBreadth: number;
-  limit: number;
-  instructions: string;
-  extractDepth: "basic" | "advanced";
-  selectPaths: string[];
-  selectDomains: string[];
-  excludePaths: string[];
-  excludeDomains: string[];
-  allowExternal: boolean;
-  includeImages: boolean;
-  categories: TavilyCrawlCategory[];
-  timeout: number;
+  maxDepth?: number;
+  maxBreadth?: number;
+  limit?: number;
+  instructions?: string;
+  extractDepth?: "basic" | "advanced";
+  selectPaths?: string[];
+  selectDomains?: string[];
+  excludePaths?: string[];
+  excludeDomains?: string[];
+  allowExternal?: boolean;
+  includeImages?: boolean;
+  categories?: TavilyCrawlCategory[];
+  format?: "markdown" | "text";
+  timeout?: number;
   [key: string]: any;
 };
 
@@ -166,17 +168,17 @@ export type TavilyCrawlResponse = {
 };
 
 export type TavilyMapOptions = {
-  limit: number;
-  maxDepth: number;
-  maxBreadth: number;
-  selectPaths: string[];
-  selectDomains: string[];
-  excludePaths: string[];
-  excludeDomains: string[];
-  categories: TavilyCrawlCategory[];
-  allowExternal: boolean;
-  instructions: string;
-  timeout: number;
+  limit?: number;
+  maxDepth?: number;
+  maxBreadth?: number;
+  selectPaths?: string[];
+  selectDomains?: string[];
+  excludePaths?: string[];
+  excludeDomains?: string[];
+  categories?: TavilyCrawlCategory[];
+  allowExternal?: boolean;
+  instructions?: string;
+  timeout?: number;
   [key: string]: any;
 };
 

@@ -12,16 +12,11 @@ export function _extract(
 ): TavilyExtractFunction {
   return async function extract(
     urls: Array<string>,
-    options: TavilyExtractOptions = {
-      includeImages: false,
-      extractDepth: "basic",
-      timeout: 60,
-    }
+    options: Partial<TavilyExtractOptions>
   ) {
-    const { includeImages, extractDepth, ...kwargs } = options;
-    let { timeout } = options;
+    const { includeImages, extractDepth, format, timeout, ...kwargs } = options;
 
-    timeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
+    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
 
     try {
       const response = await post(
@@ -30,11 +25,12 @@ export function _extract(
           urls,
           include_images: includeImages,
           extract_depth: extractDepth,
+          format,
           ...kwargs,
         },
         apiKey,
         proxies,
-        timeout
+        requestTimeout
       );
 
       return {
@@ -56,7 +52,7 @@ export function _extract(
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.code === "ECONNABORTED") {
-          handleTimeoutError(timeout);
+          handleTimeoutError(requestTimeout);
         }
         if (err.response) {
           handleRequestError(err.response as AxiosResponse);

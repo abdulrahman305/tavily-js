@@ -21,27 +21,8 @@ export function _search(
 ): TavilySearchFuncton {
   return async function search(
     query: string,
-    options: Partial<TavilySearchOptions> = {}
+    options: Partial<TavilySearchOptions>
   ) {
-    const defaultOptions: TavilySearchOptions = {
-      searchDepth: "basic",
-      topic: "general",
-      days: 3,
-      maxResults: 5,
-      includeImages: false,
-      includeImageDescriptions: false,
-      includeAnswer: false,
-      includeRawContent: false,
-      includeDomains: undefined,
-      excludeDomains: undefined,
-      maxTokens: undefined,
-      timeRange: undefined,
-      chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
-      country: undefined,
-    };
-
-    const mergedOptions = { ...defaultOptions, ...options };
-
     const {
       searchDepth,
       topic,
@@ -56,10 +37,11 @@ export function _search(
       timeRange,
       chunksPerSource,
       country,
+      timeout,
       ...kwargs
-    } = mergedOptions;
+    } = options;
 
-    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
 
     try {
       const response = await post(
@@ -83,7 +65,7 @@ export function _search(
         },
         apiKey,
         proxies,
-        timeout
+        requestTimeout
       );
 
       return {
@@ -110,7 +92,7 @@ export function _search(
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.code === "ECONNABORTED") {
-          handleTimeoutError(timeout);
+          handleTimeoutError(requestTimeout);
         }
         if (err.response) {
           handleRequestError(err.response as AxiosResponse);
@@ -127,45 +109,28 @@ export function _searchQNA(
   apiKey: string,
   proxies?: TavilyProxyOptions
 ): TavilyQNASearchFuncton {
-  return async function searchQNA(
-    query: string,
-    options: TavilySearchOptions = {
-      searchDepth: "advanced",
-      topic: "general",
-      days: 3,
-      maxResults: 5,
-      includeImages: false,
-      includeImageDescriptions: false,
-      includeAnswer: false,
-      includeRawContent: false,
-      includeDomains: undefined,
-      excludeDomains: undefined,
-      maxTokens: undefined,
-      chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
-    }
-  ) {
-    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+  return async function searchQNA(query: string, options: TavilySearchOptions) {
+    const requestTimeout = options?.timeout
+      ? Math.min(options.timeout, 120)
+      : 60; // Max 120s, default to 60
 
     try {
       const response = await post(
         "search",
         {
           query,
-          search_depth: options.searchDepth,
+          search_depth: options.searchDepth ?? "advanced",
           topic: options.topic,
           days: options.days,
           max_results: options.maxResults,
-          include_images: false,
-          include_image_descriptions: false,
           include_answer: true,
-          include_raw_content: false,
           include_domains: options.includeDomains,
           exclude_domains: options.excludeDomains,
           chunks_per_source: options.chunksPerSource,
         },
         apiKey,
         proxies,
-        timeout
+        requestTimeout
       );
 
       const answer = response.data.answer;
@@ -174,7 +139,7 @@ export function _searchQNA(
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.code === "ECONNABORTED") {
-          handleTimeoutError(timeout);
+          handleTimeoutError(requestTimeout);
         }
         if (err.response) {
           handleRequestError(err.response as AxiosResponse);
@@ -193,20 +158,7 @@ export function _searchContext(
 ): TavilyContextSearchFuncton {
   return async function searchContext(
     query: string,
-    options: TavilySearchOptions = {
-      searchDepth: "basic",
-      topic: "general",
-      days: 3,
-      maxResults: 5,
-      includeImages: false,
-      includeImageDescriptions: false,
-      includeAnswer: false,
-      includeRawContent: false,
-      includeDomains: undefined,
-      excludeDomains: undefined,
-      maxTokens: DEFAULT_MAX_TOKENS,
-      chunksPerSource: DEFAULT_CHUNKS_PER_SOURCE,
-    }
+    options: TavilySearchOptions
   ) {
     const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
 
@@ -219,13 +171,8 @@ export function _searchContext(
           topic: options.topic,
           days: options.days,
           max_results: options.maxResults,
-          include_images: false,
-          include_image_descriptions: false,
-          include_answer: false,
-          include_raw_content: false,
           include_domains: options.includeDomains,
           exclude_domains: options.excludeDomains,
-          max_tokens: options.maxTokens,
           chunks_per_source: options.chunksPerSource,
         },
         apiKey,
@@ -242,7 +189,9 @@ export function _searchContext(
         };
       });
 
-      return JSON.stringify(getMaxTokensFromList(context, options.maxTokens));
+      return JSON.stringify(
+        getMaxTokensFromList(context, options.maxTokens ?? DEFAULT_MAX_TOKENS)
+      );
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.code === "ECONNABORTED") {
