@@ -23,6 +23,7 @@ export async function post(
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
+    "X-Client-Source": "tavily-js",
   };
 
   const timeoutInMillis = timeout * 1000;
