@@ -37,6 +37,7 @@ export function _search(
       timeRange,
       chunksPerSource,
       country,
+      autoParameters,
       timeout,
       ...kwargs
     } = options;
@@ -61,6 +62,7 @@ export function _search(
           time_range: timeRange,
           chunks_per_source: chunksPerSource,
           country: country,
+          auto_parameters: autoParameters,
           ...kwargs,
         },
         apiKey,
@@ -88,6 +90,13 @@ export function _search(
           };
         }),
         answer: response.data.answer,
+        autoParameters: {
+          includeDomains: response.data.auto_parameters.include_domains,
+          excludeDomains: response.data.auto_parameters.exclude_domains,
+          topic: response.data.auto_parameters.topic,
+          timeRange: response.data.auto_parameters.time_range,
+          searchDepth: response.data.auto_parameters.search_depth,
+        },
       };
     } catch (err) {
       if (err instanceof AxiosError) {

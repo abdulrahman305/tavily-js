@@ -1,6 +1,6 @@
 export type TavilySearchFuncton = (
   query: string,
-  options: TavilySearchOptions
+  options?: TavilySearchOptions
 ) => Promise<TavilySearchResponse>;
 
 export type TavilyQNASearchFuncton = (
@@ -15,17 +15,17 @@ export type TavilyContextSearchFuncton = (
 
 export type TavilyExtractFunction = (
   urls: Array<string>,
-  options: TavilyExtractOptions
+  options?: TavilyExtractOptions
 ) => Promise<TavilyExtractResponse>;
 
 export type TavilyCrawlFunction = (
   url: string,
-  options: TavilyCrawlOptions
+  options?: TavilyCrawlOptions
 ) => Promise<TavilyCrawlResponse>;
 
 export type TavilyMapFunction = (
   url: string,
-  options: TavilyMapOptions
+  options?: TavilyMapOptions
 ) => Promise<TavilyMapResponse>;
 
 export type TavilyClient = {
@@ -62,6 +62,7 @@ export type TavilySearchOptions = {
   timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
   chunksPerSource?: number;
   country?: string;
+  autoParameters?: boolean;
   timeout?: number;
   [key: string]: any;
 };
@@ -86,6 +87,7 @@ export type TavilySearchResponse = {
   responseTime: number;
   images: Array<TavilyImage>;
   results: Array<TavilySearchResult>;
+  autoParameters?: Partial<TavilySearchOptions>;
 };
 
 export type TavilyExtractOptions = {
