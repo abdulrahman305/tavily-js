@@ -45,6 +45,7 @@ export type TavilyProxyOptions = {
 export type TavilyClientOptions = {
   apiKey?: string;
   proxies?: TavilyProxyOptions;
+  apiBaseURL?: string;
 };
 
 export type TavilySearchOptions = {

@@ -17,7 +17,8 @@ import {
 
 export function _search(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilySearchFuncton {
   return async function search(
     query: string,
@@ -67,7 +68,8 @@ export function _search(
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       return {
@@ -118,7 +120,8 @@ export function _search(
 
 export function _searchQNA(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyQNASearchFuncton {
   return async function searchQNA(
     query: string,
@@ -144,7 +147,8 @@ export function _searchQNA(
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       const answer = response.data.answer;
@@ -168,7 +172,8 @@ export function _searchQNA(
 
 export function _searchContext(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyContextSearchFuncton {
   return async function searchContext(
     query: string,
@@ -191,7 +196,8 @@ export function _searchContext(
         },
         apiKey,
         proxies,
-        timeout
+        timeout,
+        apiBaseURL
       );
 
       const sources = response.data?.results || [];

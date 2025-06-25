@@ -8,7 +8,8 @@ import { handleRequestError, handleTimeoutError, post } from "./utils";
 
 export function _extract(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyExtractFunction {
   return async function extract(
     urls: Array<string>,
@@ -30,7 +31,8 @@ export function _extract(
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       return {

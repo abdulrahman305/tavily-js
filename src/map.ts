@@ -8,7 +8,8 @@ import { AxiosError, AxiosResponse } from "axios";
 
 export function _map(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyMapFunction {
   return async function map(
     url: string,
@@ -50,7 +51,8 @@ export function _map(
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       return {

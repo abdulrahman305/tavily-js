@@ -8,7 +8,8 @@ import { AxiosError, AxiosResponse } from "axios";
 
 export function _crawl(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyCrawlFunction {
   return async function crawl(
     url: string,
@@ -56,7 +57,8 @@ export function _crawl(
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       return {
