@@ -161,6 +161,7 @@ export type TavilyCrawlOptions = {
   categories?: TavilyCrawlCategory[];
   format?: "markdown" | "text";
   timeout?: number;
+  includeFavicon?: boolean;
   [key: string]: any;
 };
 
@@ -171,6 +172,7 @@ export type TavilyCrawlResponse = {
     url: string;
     rawContent: string;
     images: Array<string>;
+    favicon?: string;
   }>;
 };
 
