@@ -40,6 +40,7 @@ export function _search(
       country,
       autoParameters,
       timeout,
+      includeFavicon,
       ...kwargs
     } = options;
 
@@ -64,6 +65,7 @@ export function _search(
           chunks_per_source: chunksPerSource,
           country: country,
           auto_parameters: autoParameters,
+          include_favicon: includeFavicon,
           ...kwargs,
         },
         apiKey,
@@ -89,6 +91,7 @@ export function _search(
             rawContent: result.raw_content,
             score: result.score,
             publishedDate: result.published_date,
+            favicon: result.favicon,
           };
         }),
         answer: response.data.answer,
@@ -144,6 +147,7 @@ export function _searchQNA(
           include_domains: options.includeDomains,
           exclude_domains: options.excludeDomains,
           chunks_per_source: options.chunksPerSource,
+          include_favicon: options.includeFavicon,
         },
         apiKey,
         proxies,
@@ -193,6 +197,7 @@ export function _searchContext(
           include_domains: options.includeDomains,
           exclude_domains: options.excludeDomains,
           chunks_per_source: options.chunksPerSource,
+          include_favicon: options.includeFavicon,
         },
         apiKey,
         proxies,

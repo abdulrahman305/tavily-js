@@ -15,7 +15,7 @@ export function _extract(
     urls: Array<string>,
     options: Partial<TavilyExtractOptions> = {}
   ) {
-    const { includeImages, extractDepth, format, timeout, ...kwargs } = options;
+    const { includeImages, extractDepth, format, timeout, includeFavicon, ...kwargs } = options;
 
     const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
 
@@ -27,6 +27,7 @@ export function _extract(
           include_images: includeImages,
           extract_depth: extractDepth,
           format,
+          include_favicon: includeFavicon,
           ...kwargs,
         },
         apiKey,
@@ -42,6 +43,7 @@ export function _extract(
             url: result.url,
             rawContent: result.raw_content,
             images: result.images,
+            favicon: result.favicon,
           };
         }),
         failedResults: response.data.failed_results.map((result: any) => {
