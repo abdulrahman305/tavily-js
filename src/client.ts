@@ -17,6 +17,7 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
 
     return Object.keys(result).length > 0 ? result : undefined;
   })();
+  const apiBaseURL = options?.apiBaseURL;
 
   if (!apiKey) {
     throw new Error(
@@ -25,11 +26,11 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
   }
 
   return {
-    search: _search(apiKey, proxies),
-    extract: _extract(apiKey, proxies),
-    searchQNA: _searchQNA(apiKey, proxies),
-    searchContext: _searchContext(apiKey, proxies),
-    crawl: _crawl(apiKey, proxies),
-    map: _map(apiKey, proxies),
+    search: _search(apiKey, proxies, apiBaseURL),
+    extract: _extract(apiKey, proxies, apiBaseURL),
+    searchQNA: _searchQNA(apiKey, proxies, apiBaseURL),
+    searchContext: _searchContext(apiKey, proxies, apiBaseURL),
+    crawl: _crawl(apiKey, proxies, apiBaseURL),
+    map: _map(apiKey, proxies, apiBaseURL),
   };
 }

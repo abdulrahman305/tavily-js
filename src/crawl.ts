@@ -8,7 +8,8 @@ import { AxiosError, AxiosResponse } from "axios";
 
 export function _crawl(
   apiKey: string,
-  proxies?: TavilyProxyOptions
+  proxies?: TavilyProxyOptions,
+  apiBaseURL?: string
 ): TavilyCrawlFunction {
   return async function crawl(
     url: string,
@@ -29,6 +30,7 @@ export function _crawl(
       instructions,
       format,
       timeout,
+      includeFavicon,
       ...kwargs
     } = options;
 
@@ -52,11 +54,13 @@ export function _crawl(
           categories,
           instructions,
           format,
+          include_favicon: includeFavicon,
           ...kwargs,
         },
         apiKey,
         proxies,
-        requestTimeout
+        requestTimeout,
+        apiBaseURL
       );
 
       return {
@@ -67,6 +71,7 @@ export function _crawl(
             url: item.url,
             rawContent: item.raw_content,
             images: item.images,
+            favicon: item.favicon,
           };
         }),
       };

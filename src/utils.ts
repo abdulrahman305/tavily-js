@@ -17,9 +17,10 @@ export async function post(
   body: any,
   apiKey: string,
   proxies?: TavilyProxyOptions,
-  timeout: number = 60
+  timeout: number = 60,
+  apiBaseURL?: string
 ): Promise<AxiosResponse> {
-  const url = `${BASE_URL}/${endpoint}`;
+  const url = `${apiBaseURL || BASE_URL}/${endpoint}`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,

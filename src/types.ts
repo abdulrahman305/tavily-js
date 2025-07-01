@@ -45,6 +45,7 @@ export type TavilyProxyOptions = {
 export type TavilyClientOptions = {
   apiKey?: string;
   proxies?: TavilyProxyOptions;
+  apiBaseURL?: string;
 };
 
 export type TavilySearchOptions = {
@@ -64,6 +65,7 @@ export type TavilySearchOptions = {
   country?: string;
   autoParameters?: boolean;
   timeout?: number;
+  includeFavicon?: boolean;
   [key: string]: any;
 };
 
@@ -88,6 +90,7 @@ export type TavilySearchResponse = {
   images: Array<TavilyImage>;
   results: Array<TavilySearchResult>;
   autoParameters?: Partial<TavilySearchOptions>;
+  favicon?: string;
 };
 
 export type TavilyExtractOptions = {
@@ -95,6 +98,7 @@ export type TavilyExtractOptions = {
   extractDepth?: "basic" | "advanced";
   format?: "markdown" | "text";
   timeout?: number;
+  includeFavicon?: boolean;
   [key: string]: any;
 };
 
@@ -102,6 +106,7 @@ type TavilyExtractResult = {
   url: string;
   rawContent: string;
   images?: Array<string>;
+  favicon?: string;
 };
 
 type TavilyExtractFailedResult = {
@@ -156,6 +161,7 @@ export type TavilyCrawlOptions = {
   categories?: TavilyCrawlCategory[];
   format?: "markdown" | "text";
   timeout?: number;
+  includeFavicon?: boolean;
   [key: string]: any;
 };
 
@@ -166,6 +172,7 @@ export type TavilyCrawlResponse = {
     url: string;
     rawContent: string;
     images: Array<string>;
+    favicon?: string;
   }>;
 };
 
