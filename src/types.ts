@@ -63,6 +63,8 @@ export type TavilySearchOptions = {
   timeRange?: "year" | "month" | "week" | "day" | "y" | "m" | "w" | "d";
   chunksPerSource?: number;
   country?: string;
+  startDate?: string;
+  endDate?: string;
   autoParameters?: boolean;
   timeout?: number;
   includeFavicon?: boolean;
