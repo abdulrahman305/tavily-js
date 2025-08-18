@@ -93,6 +93,7 @@ export type TavilySearchResponse = {
   results: Array<TavilySearchResult>;
   autoParameters?: Partial<TavilySearchOptions>;
   favicon?: string;
+  requestId: string;
 };
 
 export type TavilyExtractOptions = {
@@ -146,6 +147,7 @@ export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
   responseTime: number;
+  requestId: string;
 };
 
 export type TavilyCrawlOptions = {
@@ -176,6 +178,7 @@ export type TavilyCrawlResponse = {
     images: Array<string>;
     favicon?: string;
   }>;
+  requestId: string;
 };
 
 export type TavilyMapOptions = {
@@ -197,4 +200,5 @@ export type TavilyMapResponse = {
   responseTime: number;
   baseUrl: string;
   results: string[];
+  requestId: string;
 };

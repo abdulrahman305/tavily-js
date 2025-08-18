@@ -99,6 +99,7 @@ export function _search(
           };
         }),
         answer: response.data.answer,
+        requestId: response.data.request_id,
         ...(response.data.auto_parameters && {
           autoParameters: {
             includeDomains: response.data.auto_parameters?.include_domains,

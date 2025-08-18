@@ -74,6 +74,7 @@ export function _crawl(
             favicon: item.favicon,
           };
         }),
+        requestId: response.data.request_id,
       };
     } catch (err) {
       if (err instanceof AxiosError) {

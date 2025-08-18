@@ -59,6 +59,7 @@ export function _map(
         responseTime: response.data.response_time,
         baseUrl: response.data.base_url,
         results: response.data.results,
+        requestId: response.data.request_id,
       };
     } catch (err) {
       if (err instanceof AxiosError) {
