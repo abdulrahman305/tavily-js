@@ -52,6 +52,7 @@ export function _extract(
             error: result.error,
           };
         }),
+        requestId: response.data.request_id,
       };
     } catch (err) {
       if (err instanceof AxiosError) {
