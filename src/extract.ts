@@ -17,7 +17,7 @@ export function _extract(
   ) {
     const { includeImages, extractDepth, format, timeout, includeFavicon, ...kwargs } = options;
 
-    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
+    const requestTimeout = timeout ? Math.min(timeout, 120) : 30; // Max 120s, default to 30
 
     try {
       const response = await post(
@@ -28,6 +28,7 @@ export function _extract(
           extract_depth: extractDepth,
           format,
           include_favicon: includeFavicon,
+          timeout, // Add timeout to the payload
           ...kwargs,
         },
         apiKey,
