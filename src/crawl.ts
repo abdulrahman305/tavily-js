@@ -52,6 +52,7 @@ export function _crawl(
           include_images: includeImages,
           instructions,
           format,
+          timeout,
           include_favicon: includeFavicon,
           ...kwargs,
         },

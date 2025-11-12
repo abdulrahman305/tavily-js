@@ -45,6 +45,7 @@ export function _map(
           exclude_domains: excludeDomains,
           allow_external: allowExternal,
           instructions,
+          timeout,
           ...kwargs,
         },
         apiKey,
