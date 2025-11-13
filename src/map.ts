@@ -29,7 +29,7 @@ export function _map(
       ...kwargs
     } = options;
 
-    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
+    const requestTimeout = timeout ?? 150; // Default to 150s
 
     try {
       const response = await post(
@@ -45,6 +45,7 @@ export function _map(
           exclude_domains: excludeDomains,
           allow_external: allowExternal,
           instructions,
+          timeout,
           ...kwargs,
         },
         apiKey,

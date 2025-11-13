@@ -46,7 +46,7 @@ export function _search(
       ...kwargs
     } = options;
 
-    const requestTimeout = timeout ? Math.min(timeout, 120) : 60; // Max 120s, default to 60
+    const requestTimeout = timeout ?? 60; // Default to 60s
 
     try {
       const response = await post(
@@ -135,9 +135,7 @@ export function _searchQNA(
     query: string,
     options: TavilySearchOptions = {}
   ) {
-    const requestTimeout = options?.timeout
-      ? Math.min(options.timeout, 120)
-      : 60; // Max 120s, default to 60
+    const requestTimeout = options?.timeout ?? 60; // Default to 60s
 
     try {
       const response = await post(
@@ -188,7 +186,7 @@ export function _searchContext(
     query: string,
     options: TavilySearchOptions = {}
   ) {
-    const timeout = options?.timeout ? Math.min(options.timeout, 120) : 60; // Max 120s, default to 60
+    const timeout = options?.timeout ?? 60; // Default to 60s
 
     try {
       const response = await post(
