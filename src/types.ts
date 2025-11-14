@@ -28,6 +28,15 @@ export type TavilyMapFunction = (
   options?: TavilyMapOptions
 ) => Promise<TavilyMapResponse>;
 
+export type TavilyResearchFunction = (
+  taskDescription: string,
+  options?: TavilyResearchOptions
+) => Promise<TavilyResearchResponse>;
+
+export type TavilyGetResearchFunction = (
+  requestId: string
+) => Promise<TavilyGetResearchResponse>;
+
 export type TavilyClient = {
   search: TavilySearchFuncton;
   searchQNA: TavilyQNASearchFuncton;
@@ -35,6 +44,8 @@ export type TavilyClient = {
   extract: TavilyExtractFunction;
   crawl: TavilyCrawlFunction;
   map: TavilyMapFunction;
+  research: TavilyResearchFunction;
+  getResearch: TavilyGetResearchFunction;
 };
 
 export type TavilyProxyOptions = {
@@ -174,4 +185,43 @@ export type TavilyMapResponse = {
   baseUrl: string;
   results: string[];
   requestId: string;
+};
+
+export type MCPObject = {
+  name: string;
+  url: string;
+  transport?: "streamable_http" | "sse";
+  toolsToInclude?: string[];
+  headers?: Record<string, any>;
+};
+
+export type TavilyResearchOptions = {
+  researchDepth?: "basic" | "deep" | "auto";
+  outputSchema?: Record<string, any>;
+  stream?: boolean;
+  citationFormat?: "numbered" | "mla" | "apa" | "chicago";
+  mcps?: MCPObject[];
+  timeout?: number;
+  [key: string]: any;
+};
+
+export type TavilyResearchResponse = {
+  requestId: string;
+  createdAt: string;
+  status: string;
+  taskDescription: string;
+  researchDepth: string;
+};
+
+export type TavilyGetResearchResponse = {
+  requestId: string;
+  createdAt: string;
+  completedAt: string;
+  status: string;
+  content: string | Record<string, any>;
+  sources: Array<{
+    title: string;
+    url: string;
+    content: string;
+  }>;
 };

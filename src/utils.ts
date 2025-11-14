@@ -17,7 +17,42 @@ export async function post(
   body: any,
   apiKey: string,
   proxies?: TavilyProxyOptions,
-  timeout: number = 60,
+  timeout?: number,
+  apiBaseURL?: string
+): Promise<AxiosResponse> {
+  const requestTimeout = endpoint === "research" ? timeout : timeout ?? 60; // Research endpoint has no default timeout
+
+  const url = `${apiBaseURL || BASE_URL}/${endpoint}`;
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+    "X-Client-Source": "tavily-js",
+  };
+
+  const config: AxiosRequestConfig = { headers };
+
+  // Only set timeout if provided
+  if (requestTimeout !== undefined) {
+    const timeoutInMillis = requestTimeout * 1000;
+    config.timeout = timeoutInMillis;
+  }
+
+  if (proxies) {
+    if (proxies.http) {
+      config.httpAgent = new HttpsProxyAgent(proxies.http);
+    }
+    if (proxies.https) {
+      config.httpsAgent = new HttpsProxyAgent(proxies.https);
+    }
+  }
+  return axios.post(url, body, config);
+}
+
+export async function get(
+  endpoint: string,
+  apiKey: string,
+  proxies?: TavilyProxyOptions,
+  timeout?: number,
   apiBaseURL?: string
 ): Promise<AxiosResponse> {
   const url = `${apiBaseURL || BASE_URL}/${endpoint}`;
@@ -27,7 +62,8 @@ export async function post(
     "X-Client-Source": "tavily-js",
   };
 
-  const timeoutInMillis = timeout * 1000;
+  const requestTimeout = endpoint.includes("research") ? timeout : timeout ?? 60; // Research endpoint has no default timeout
+  const timeoutInMillis = requestTimeout ? requestTimeout * 1000 : undefined;
 
   const config: AxiosRequestConfig = { headers, timeout: timeoutInMillis };
   if (proxies) {
@@ -38,7 +74,7 @@ export async function post(
       config.httpsAgent = new HttpsProxyAgent(proxies.https);
     }
   }
-  return axios.post(url, body, config);
+  return axios.get(url, config);
 }
 
 function getTotalTokensFromString(
