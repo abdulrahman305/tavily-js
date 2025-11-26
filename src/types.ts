@@ -31,7 +31,7 @@ export type TavilyMapFunction = (
 export type TavilyResearchFunction = (
   taskDescription: string,
   options?: TavilyResearchOptions
-) => Promise<TavilyResearchResponse>;
+) => Promise<TavilyResearchResponse | AsyncGenerator<Buffer, void, unknown>>;
 
 export type TavilyGetResearchFunction = (
   requestId: string
@@ -196,7 +196,7 @@ export type MCPObject = {
 };
 
 export type TavilyResearchOptions = {
-  researchDepth?: "basic" | "deep" | "auto";
+  model?: "tvly-mini" | "tvly-pro" | "auto";
   outputSchema?: Record<string, any>;
   stream?: boolean;
   citationFormat?: "numbered" | "mla" | "apa" | "chicago";
@@ -209,8 +209,8 @@ export type TavilyResearchResponse = {
   requestId: string;
   createdAt: string;
   status: string;
-  taskDescription: string;
-  researchDepth: string;
+  input: string;
+  model: string;
 };
 
 export type TavilyGetResearchResponse = {

@@ -6,6 +6,7 @@ import {
 } from "./types";
 import { post, get, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
+import { Readable } from "stream";
 
 export function _research(
     apiKey: string,
@@ -13,11 +14,11 @@ export function _research(
     apiBaseURL?: string
 ): TavilyResearchFunction {
     return async function research(
-        taskDescription: string,
+        input: string,
         options: Partial<TavilyResearchOptions> = {}
     ) {
         const {
-            researchDepth,
+            model,
             outputSchema,
             stream,
             citationFormat,
@@ -35,43 +36,94 @@ export function _research(
             headers: mcp.headers,
         }));
 
-        try {
-            const response = await post(
-                "research",
-                {
-                    task_description: taskDescription,
-                    research_depth: researchDepth,
-                    output_schema: outputSchema,
-                    stream: stream,
-                    citation_format: citationFormat,
-                    mcps: mappedMcps,
-                    ...kwargs,
-                },
-                apiKey,
-                proxies,
-                timeout,
-                apiBaseURL
-            );
+        if (stream) {
+            try {
+                const response = await post(
+                    "research",
+                    {
+                        input: input,
+                        model,
+                        output_schema: outputSchema,
+                        stream: stream,
+                        citation_format: citationFormat,
+                        mcps: mappedMcps,
+                        ...kwargs,
+                    },
+                    apiKey,
+                    proxies,
+                    timeout,
+                    apiBaseURL,
+                    'stream'
+                );
 
-            return {
-                requestId: response.data.request_id,
-                createdAt: response.data.created_at,
-                status: response.data.status,
-                taskDescription: response.data.task_description,
-                researchDepth: response.data.research_depth,
-            };
-        } catch (err) {
-            if (err instanceof AxiosError) {
-                if (err.code === "ECONNABORTED") {
-                    handleTimeoutError(timeout || 0);
+                async function* streamGenerator(): AsyncGenerator<Buffer, void, unknown> {
+                    const stream = response.data as Readable;
+                    try {
+                        for await (const chunk of stream) {
+                            if (chunk) {
+                                yield chunk; 
+                            }
+                        }
+                    } finally {
+                        if (!stream.destroyed) {
+                            stream.destroy();
+                        }
+                    }
                 }
-                if (err.response) {
-                    handleRequestError(err.response as AxiosResponse);
+
+                return streamGenerator();
+            } catch (err) {
+                if (err instanceof AxiosError) {
+                    if (err.code === "ECONNABORTED") {
+                        handleTimeoutError(timeout || 0);
+                    }
+                    if (err.response) {
+                        handleRequestError(err.response as AxiosResponse);
+                    }
                 }
+                throw new Error(
+                    `An unexpected error occurred while making the request. Error: ${err}`
+                );
             }
-            throw new Error(
-                `An unexpected error occurred while making the request. Error: ${err}`
-            );
+        } else {
+            try {
+                const response = await post(
+                    "research",
+                    {
+                        input,
+                        model,
+                        output_schema: outputSchema,
+                        stream,
+                        citation_format: citationFormat,
+                        mcps: mappedMcps,
+                        ...kwargs,
+                    },
+                    apiKey,
+                    proxies,
+                    timeout,
+                    apiBaseURL
+                );
+
+                return {
+                    requestId: response.data.request_id,
+                    createdAt: response.data.created_at,
+                    status: response.data.status,
+                    input: response.data.input,
+                    model: response.data.model,
+                };
+            } catch (err) {
+                if (err instanceof AxiosError) {
+                    if (err.code === "ECONNABORTED") {
+                        handleTimeoutError(timeout || 0);
+                    }
+                    if (err.response) {
+                        handleRequestError(err.response as AxiosResponse);
+                    }
+                }
+                throw new Error(
+                    `An unexpected error occurred while making the request. Error: ${err}`
+                );
+            }
         }
     };
 }

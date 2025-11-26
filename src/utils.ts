@@ -18,7 +18,8 @@ export async function post(
   apiKey: string,
   proxies?: TavilyProxyOptions,
   timeout?: number,
-  apiBaseURL?: string
+  apiBaseURL?: string,
+  responseType?: AxiosRequestConfig['responseType']
 ): Promise<AxiosResponse> {
   const requestTimeout = endpoint === "research" ? timeout : timeout ?? 60; // Research endpoint has no default timeout
 
@@ -45,6 +46,11 @@ export async function post(
       config.httpsAgent = new HttpsProxyAgent(proxies.https);
     }
   }
+
+  if (responseType) {
+    config.responseType = responseType;
+  }
+
   return axios.post(url, body, config);
 }
 
