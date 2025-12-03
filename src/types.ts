@@ -196,7 +196,7 @@ export type MCPObject = {
 };
 
 export type TavilyResearchOptions = {
-  model?: "tvly-mini" | "tvly-pro" | "auto";
+  model?: "mini" | "pro" | "auto";
   outputSchema?: Record<string, any>;
   stream?: boolean;
   citationFormat?: "numbered" | "mla" | "apa" | "chicago";
