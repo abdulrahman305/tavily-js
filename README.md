@@ -1,6 +1,6 @@
 # Tavily JavaScript SDK
 
-Tavily's JavaScript SDK allows for easy interaction with the Tavily API, offering the full range of our search and extract functionalities directly from your JavaScript and TypeScript programs. Easily integrate smart search and content extraction capabilities into your applications, harnessing the powerful Tavily Search and Tavily Extract APIs.
+Tavily's JavaScript SDK allows for easy interaction with the Tavily API, offering the full range of our search, extract, crawl, map, and research functionalities directly from your JavaScript and TypeScript programs. Easily integrate smart search, content extraction, and research capabilities into your applications, harnessing Tavily's powerful features.
 
 ## Installing
 
@@ -82,13 +82,13 @@ const { tavily } = require("@tavily/core");
 const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
 
 // Step 2. Defining the starting URL to crawl
-const start_url = "https://wikipedia.org/wiki/Lemon"
+const start_url = "https://wikipedia.org/wiki/Lemon";
 
 // Step 3. Executing the crawl request with instructions to surface only pages about citrus fruits
 response = await tvly.crawl(start_url, {
   max_depth: 3,
   limit: 50,
-  instructions: "Find all pages on citrus fruits"
+  instructions: "Find all pages on citrus fruits",
 });
 
 // Step 4. Printing pages matching the query
@@ -115,18 +115,72 @@ const { tavily } = require("@tavily/core");
 const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
 
 // Step 2. Defining the starting URL
-const start_url = "https://wikipedia.org/wiki/Lemon"
+const start_url = "https://wikipedia.org/wiki/Lemon";
 
 // Step 3. Executing the map request with parameters to focus on specific pages
 response = await tvly.map(start_url, {
   max_depth: 3,
   limit: 50,
-  instructions: "Find all pages on citrus fruits"
+  instructions: "Find all pages on citrus fruits",
 });
 
 // Step 4. Printing the site structure
 for (let url of response.results) {
   console.log(`URl: ${url}`);
+}
+```
+
+> To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
+
+# Tavily Research
+
+Research lets you create comprehensive research reports on any topic, with automatic source gathering, analysis, and structured output.
+
+## Usage
+
+Below are some code snippets that demonstrate how to interact with our Research API. Each step and component of this code is explained in greater detail in the API Methods section below.
+
+### Creating a research task and retrieving results
+
+```javascript
+const { tavily } = require("@tavily/core");
+
+// Step 1. Instantiating your Tavily client
+const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
+
+// Step 2. Creating a research task
+const response = await tvly.research("Research the latest developments in AI", {
+  model: "pro",
+  citationFormat: "apa",
+});
+
+// Step 3. Retrieving the research results
+const requestId = response.requestId;
+const result = await tvly.getResearch(requestId);
+
+// Step 4. Printing the research report
+console.log(`Status: ${result.status}`);
+console.log(`Content: ${result.content}`);
+console.log(`Sources: ${result.sources.length} sources found`);
+```
+
+### Streaming research results
+
+```javascript
+const { tavily } = require("@tavily/core");
+
+// Step 1. Instantiating your Tavily client
+const tvly = tavily({ apiKey: "tvly-YOUR_API_KEY" });
+
+// Step 2. Creating a streaming research task
+const stream = await tvly.research("Research the latest developments in AI", {
+  model: "pro",
+  stream: true,
+});
+
+// Step 3. Processing the stream as it arrives
+for await (const chunk of result as AsyncGenerator<Buffer, void, unknown>) {
+    console.log("Received chunk:", chunk.toString('utf-8'));
 }
 ```
 
