@@ -35,7 +35,9 @@ export type TavilyResearchFunction = (
 
 export type TavilyGetResearchFunction = (
   requestId: string
-) => Promise<TavilyGetResearchResponse | TavilyGetResearchIncompleteStatusResponse>;
+) => Promise<
+  TavilyGetResearchResponse | TavilyGetResearchIncompleteStatusResponse
+>;
 
 export type TavilyClient = {
   search: TavilySearchFuncton;
@@ -128,7 +130,6 @@ type TavilyExtractFailedResult = {
   error: string;
 };
 
-
 export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
@@ -202,12 +203,12 @@ export type TavilyResearchResponse = {
   status: string;
   input: string;
   model: string;
+  responseTime: number;
 };
 
 export type TavilyGetResearchResponse = {
   requestId: string;
   createdAt: string;
-  completedAt: string;
   status: string;
   content: string | Record<string, any>;
   sources: Array<{
@@ -217,4 +218,7 @@ export type TavilyGetResearchResponse = {
   responseTime: number;
 };
 
-export type TavilyGetResearchIncompleteStatusResponse = Pick<TavilyGetResearchResponse, "requestId" | "status" | "responseTime">;
+export type TavilyGetResearchIncompleteStatusResponse = Pick<
+  TavilyGetResearchResponse,
+  "requestId" | "status" | "responseTime"
+>;
