@@ -28,6 +28,17 @@ export type TavilyMapFunction = (
   options?: TavilyMapOptions
 ) => Promise<TavilyMapResponse>;
 
+export type TavilyResearchFunction = (
+  input: string,
+  options?: TavilyResearchOptions
+) => Promise<TavilyResearchResponse | AsyncGenerator<Buffer, void, unknown>>;
+
+export type TavilyGetResearchFunction = (
+  requestId: string
+) => Promise<
+  TavilyGetResearchResponse | TavilyGetResearchIncompleteStatusResponse
+>;
+
 export type TavilyClient = {
   search: TavilySearchFuncton;
   searchQNA: TavilyQNASearchFuncton;
@@ -35,6 +46,8 @@ export type TavilyClient = {
   extract: TavilyExtractFunction;
   crawl: TavilyCrawlFunction;
   map: TavilyMapFunction;
+  research: TavilyResearchFunction;
+  getResearch: TavilyGetResearchFunction;
 };
 
 export type TavilyProxyOptions = {
@@ -117,7 +130,6 @@ type TavilyExtractFailedResult = {
   error: string;
 };
 
-
 export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
@@ -175,3 +187,38 @@ export type TavilyMapResponse = {
   results: string[];
   requestId: string;
 };
+
+export type TavilyResearchOptions = {
+  model?: "mini" | "pro" | "auto";
+  outputSchema?: Record<string, any>;
+  stream?: boolean;
+  citationFormat?: "numbered" | "mla" | "apa" | "chicago";
+  timeout?: number;
+  [key: string]: any;
+};
+
+export type TavilyResearchResponse = {
+  requestId: string;
+  createdAt: string;
+  status: string;
+  input: string;
+  model: string;
+  responseTime: number;
+};
+
+export type TavilyGetResearchResponse = {
+  requestId: string;
+  createdAt: string;
+  status: string;
+  content: string | Record<string, any>;
+  sources: Array<{
+    title: string;
+    url: string;
+  }>;
+  responseTime: number;
+};
+
+export type TavilyGetResearchIncompleteStatusResponse = Pick<
+  TavilyGetResearchResponse,
+  "requestId" | "status" | "responseTime"
+>;
