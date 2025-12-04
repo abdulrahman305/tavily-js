@@ -29,13 +29,13 @@ export type TavilyMapFunction = (
 ) => Promise<TavilyMapResponse>;
 
 export type TavilyResearchFunction = (
-  taskDescription: string,
+  input: string,
   options?: TavilyResearchOptions
 ) => Promise<TavilyResearchResponse | AsyncGenerator<Buffer, void, unknown>>;
 
 export type TavilyGetResearchFunction = (
   requestId: string
-) => Promise<TavilyGetResearchResponse>;
+) => Promise<TavilyGetResearchResponse | TavilyGetResearchIncompleteStatusResponse>;
 
 export type TavilyClient = {
   search: TavilySearchFuncton;
@@ -187,20 +187,11 @@ export type TavilyMapResponse = {
   requestId: string;
 };
 
-export type MCPObject = {
-  name: string;
-  url: string;
-  transport?: "streamable_http" | "sse";
-  toolsToInclude?: string[];
-  headers?: Record<string, any>;
-};
-
 export type TavilyResearchOptions = {
   model?: "mini" | "pro" | "auto";
   outputSchema?: Record<string, any>;
   stream?: boolean;
   citationFormat?: "numbered" | "mla" | "apa" | "chicago";
-  mcps?: MCPObject[];
   timeout?: number;
   [key: string]: any;
 };
@@ -222,6 +213,8 @@ export type TavilyGetResearchResponse = {
   sources: Array<{
     title: string;
     url: string;
-    content: string;
   }>;
+  responseTime: number;
 };
+
+export type TavilyGetResearchIncompleteStatusResponse = Pick<TavilyGetResearchResponse, "requestId" | "status" | "responseTime">;

@@ -3,6 +3,8 @@ import {
     TavilyResearchFunction,
     TavilyGetResearchFunction,
     TavilyProxyOptions,
+    TavilyGetResearchIncompleteStatusResponse,
+    TavilyGetResearchResponse,
 } from "./types";
 import { post, get, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
@@ -22,19 +24,9 @@ export function _research(
             outputSchema,
             stream,
             citationFormat,
-            mcps,
             timeout,
             ...kwargs
         } = options;
-
-        // Map MCP objects from camelCase to snake_case for API
-        const mappedMcps = mcps?.map((mcp) => ({
-            name: mcp.name,
-            url: mcp.url,
-            transport: mcp.transport,
-            tools_to_include: mcp.toolsToInclude,
-            headers: mcp.headers,
-        }));
 
         if (stream) {
             try {
@@ -46,7 +38,6 @@ export function _research(
                         output_schema: outputSchema,
                         stream: stream,
                         citation_format: citationFormat,
-                        mcps: mappedMcps,
                         ...kwargs,
                     },
                     apiKey,
@@ -95,7 +86,6 @@ export function _research(
                         output_schema: outputSchema,
                         stream,
                         citation_format: citationFormat,
-                        mcps: mappedMcps,
                         ...kwargs,
                     },
                     apiKey,
@@ -144,15 +134,8 @@ export function _getResearch(
                 requestTimeout,
                 apiBaseURL
             );
+            return response.data as TavilyGetResearchResponse | TavilyGetResearchIncompleteStatusResponse;
 
-            return {
-                requestId: response.data.request_id,
-                createdAt: response.data.created_at,
-                completedAt: response.data.completed_at,
-                status: response.data.status,
-                content: response.data.content,
-                sources: response.data.sources,
-            };
         } catch (err) {
             if (err instanceof AxiosError) {
                 if (err.code === "ECONNABORTED") {
