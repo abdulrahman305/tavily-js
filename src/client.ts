@@ -3,6 +3,7 @@ import { _search, _searchQNA, _searchContext } from "./search";
 import { _extract } from "./extract";
 import { _crawl } from "./crawl";
 import { _map } from "./map";
+import { _research, _getResearch } from "./research";
 
 export function tavily(options?: TavilyClientOptions): TavilyClient {
   const apiKey = options?.apiKey || process.env.TAVILY_API_KEY;
@@ -32,5 +33,7 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
     searchContext: _searchContext(apiKey, proxies, apiBaseURL),
     crawl: _crawl(apiKey, proxies, apiBaseURL),
     map: _map(apiKey, proxies, apiBaseURL),
+    research: _research(apiKey, proxies, apiBaseURL),
+    getResearch: _getResearch(apiKey, proxies, apiBaseURL),
   };
 }
