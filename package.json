@@ -1,6 +1,6 @@
 {
   "name": "@tavily/core",
-  "version": "0.5.14",
+  "version": "0.6.0",
   "description": "Official JavaScript library for Tavily.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -20,15 +20,12 @@
     "build": "tsup"
   },
   "keywords": [
-    "llm",
+    "search",
+    "crawl",
+    "extract",
+    "agent",
     "ai",
-    "machine learning",
-    "ml",
-    "embeddings",
-    "vectorstores",
-    "tavily",
-    "n8n-community-node-package",
-    "n8n-nodes-tavily"
+    "tavily"
   ],
   "author": "Tavily",
   "license": "MIT",

@@ -10,7 +10,6 @@ import {
   post,
   DEFAULT_MAX_TOKENS,
   getMaxTokensFromList,
-  DEFAULT_CHUNKS_PER_SOURCE,
   handleRequestError,
   handleTimeoutError,
 } from "./utils";
@@ -126,6 +125,14 @@ export function _search(
   };
 }
 
+/**
+ * @deprecated This function is deprecated and will be removed in a future version.
+ * Use `search()` with `includeAnswer: true` instead:
+ * 
+ * @example
+ * const result = await client.search(query, { includeAnswer: true });
+ * const answer = result.answer;
+ */
 export function _searchQNA(
   apiKey: string,
   proxies?: TavilyProxyOptions,
@@ -135,6 +142,11 @@ export function _searchQNA(
     query: string,
     options: TavilySearchOptions = {}
   ) {
+    console.warn(
+      "searchQNA() is deprecated and will be removed in a future version. " +
+      "Use search() with includeAnswer: true instead."
+    );
+    
     const requestTimeout = options?.timeout ?? 60; // Default to 60s
 
     try {
@@ -177,6 +189,14 @@ export function _searchQNA(
   };
 }
 
+/**
+ * @deprecated This function is deprecated and will be removed in a future version.
+ * Use `search()` directly and process the results as needed:
+ * 
+ * @example
+ * const result = await client.search(query, options);
+ * const context = result.results.map(r => ({ url: r.url, content: r.content }));
+ */
 export function _searchContext(
   apiKey: string,
   proxies?: TavilyProxyOptions,
@@ -186,6 +206,11 @@ export function _searchContext(
     query: string,
     options: TavilySearchOptions = {}
   ) {
+    console.warn(
+      "searchContext() is deprecated and will be removed in a future version. " +
+      "Use search() directly and process the results as needed."
+    );
+    
     const timeout = options?.timeout ?? 60; // Default to 60s
 
     try {
