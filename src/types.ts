@@ -106,6 +106,7 @@ type TavilySearchResult = {
   rawContent?: string;
   score: number;
   publishedDate: string;
+  favicon?: string;
 };
 
 export type TavilySearchResponse = {
