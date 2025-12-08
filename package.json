@@ -20,15 +20,12 @@
     "build": "tsup"
   },
   "keywords": [
-    "llm",
+    "search",
+    "crawl",
+    "extract",
+    "agent",
     "ai",
-    "machine learning",
-    "ml",
-    "embeddings",
-    "vectorstores",
-    "tavily",
-    "n8n-community-node-package",
-    "n8n-nodes-tavily"
+    "tavily"
   ],
   "author": "Tavily",
   "license": "MIT",
