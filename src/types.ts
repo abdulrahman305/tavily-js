@@ -3,11 +3,19 @@ export type TavilySearchFuncton = (
   options?: TavilySearchOptions
 ) => Promise<TavilySearchResponse>;
 
+/**
+ * @deprecated This function is deprecated and will be removed in a future version.
+ * Use `search()` with `includeAnswer: true` instead, which returns the answer in the response.
+ */
 export type TavilyQNASearchFuncton = (
   query: string,
   options: TavilySearchOptions
 ) => Promise<string>;
 
+/**
+ * @deprecated This function is deprecated and will be removed in a future version.
+ * Use `search()` directly and process the results as needed.
+ */
 export type TavilyContextSearchFuncton = (
   query: string,
   options: TavilySearchOptions
@@ -41,7 +49,9 @@ export type TavilyGetResearchFunction = (
 
 export type TavilyClient = {
   search: TavilySearchFuncton;
+  /** @deprecated Use `search()` with `includeAnswer: true` instead */
   searchQNA: TavilyQNASearchFuncton;
+  /** @deprecated Use `search()` directly and process results as needed */
   searchContext: TavilyContextSearchFuncton;
   extract: TavilyExtractFunction;
   crawl: TavilyCrawlFunction;
@@ -96,6 +106,7 @@ type TavilySearchResult = {
   rawContent?: string;
   score: number;
   publishedDate: string;
+  favicon?: string;
 };
 
 export type TavilySearchResponse = {
