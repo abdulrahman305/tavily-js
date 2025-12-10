@@ -31,6 +31,17 @@ console.log(response);
 
 > To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
 
+### Tracking credit usage
+
+Pass `includeUsage: true` when calling `search`, `extract`, `crawl`, or `map` to receive a `usage` field in the response that reports the number of credits billed for that request. The parameter is optional and defaults to `false`, so existing code continues to work unchanged.
+
+```javascript
+const result = await tvly.search("Who is Leo Messi?", { includeUsage: true });
+console.log(result.usage); // Credits billed for this request
+```
+
+> Credit usage may return `0` if minimum thresholds haven't been met. See our [Credits & Pricing](https://github.com/tavily-ai/new-docs/blob/main/docs/credits-pricing.md) guide for details.
+
 # Tavily Extract
 
 The Tavily Extract API allows you to effortlessly retrieve raw content from a list of websites, making it ideal for data collection, content analysis, and research. You can also combine Tavily Extract with our Search method: first, obtain a list of relevant documents, then perform further processing on selected links to gather additional information and use it as context for your research tasks.
@@ -187,6 +198,10 @@ for await (const chunk of result as AsyncGenerator<Buffer, void, unknown>) {
 > To learn more about the different parameters, head to our [JavaScript API Reference](https://docs.tavily.com/sdk/reference/javascript).
 
 # Additional Information
+
+## OpenAI and Anthropic integrations
+
+When you integrate Tavily outputs into OpenAI or Anthropic workflows, pass `{ includeUsage: true }` to `search`, `extract`, `crawl`, or `map` any time you want to surface the billed credits. Share the returned `usage` integer alongside your LLM inputs when you need downstream auditing. The field is optional and may be `0` if the minimum billing threshold is not met.
 
 ## Proxies
 
