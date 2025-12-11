@@ -123,7 +123,7 @@ export type TavilySearchResponse = {
 export type TavilyExtractOptions = {
   includeImages?: boolean;
   extractDepth?: "basic" | "advanced";
-  format?: "markdown" | "text" | "condensed";
+  format?: "markdown" | "text";
   timeout?: number;
   includeFavicon?: boolean;
   query?: string;
