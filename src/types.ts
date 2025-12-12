@@ -118,8 +118,8 @@ export type TavilySearchResponse = {
   results: Array<TavilySearchResult>;
   autoParameters?: Partial<TavilySearchOptions>;
   favicon?: string;
+  usage?: { credits: number };
   requestId: string;
-  usage?: number;
 };
 
 export type TavilyExtractOptions = {
@@ -148,8 +148,8 @@ export type TavilyExtractResponse = {
   results: Array<TavilyExtractResult>;
   failedResults: Array<TavilyExtractFailedResult>;
   responseTime: number;
+  usage?: { credits: number };
   requestId: string;
-  usage?: number;
 };
 
 export type TavilyCrawlOptions = {
@@ -180,8 +180,8 @@ export type TavilyCrawlResponse = {
     images: Array<string>;
     favicon?: string;
   }>;
+  usage?: { credits: number };
   requestId: string;
-  usage?: number;
 };
 
 export type TavilyMapOptions = {
@@ -203,8 +203,8 @@ export type TavilyMapResponse = {
   responseTime: number;
   baseUrl: string;
   results: string[];
+  usage?: { credits: number };
   requestId: string;
-  usage?: number;
 };
 
 export type TavilyResearchOptions = {
