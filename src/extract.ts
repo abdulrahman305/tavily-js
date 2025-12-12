@@ -15,7 +15,7 @@ export function _extract(
     urls: Array<string>,
     options: Partial<TavilyExtractOptions> = {}
   ) {
-    const { includeImages, extractDepth, format, timeout, includeFavicon, ...kwargs } = options;
+    const { includeImages, extractDepth, format, timeout, includeFavicon, query, chunksPerSource, ...kwargs } = options;
 
     const requestTimeout = timeout ?? 30; // Default to 30s
 
@@ -29,6 +29,8 @@ export function _extract(
           format,
           include_favicon: includeFavicon,
           timeout, // Add timeout to the payload
+          query,
+          chunks_per_source: chunksPerSource,
           ...kwargs,
         },
         apiKey,

@@ -126,6 +126,8 @@ export type TavilyExtractOptions = {
   format?: "markdown" | "text";
   timeout?: number;
   includeFavicon?: boolean;
+  query?: string;
+  chunksPerSource?: number;
   [key: string]: any;
 };
 
