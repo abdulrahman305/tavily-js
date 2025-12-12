@@ -170,6 +170,7 @@ export type TavilyCrawlOptions = {
   timeout?: number;
   includeFavicon?: boolean;
   includeUsage?: boolean;
+  chunksPerSource?: number;
   [key: string]: any;
 };
 
