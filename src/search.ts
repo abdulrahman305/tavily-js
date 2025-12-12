@@ -42,6 +42,7 @@ export function _search(
       autoParameters,
       timeout,
       includeFavicon,
+      includeUsage,
       ...kwargs
     } = options;
 
@@ -69,6 +70,7 @@ export function _search(
           end_date: endDate,
           auto_parameters: autoParameters,
           include_favicon: includeFavicon,
+          include_usage: includeUsage,
           ...kwargs,
         },
         apiKey,
@@ -99,6 +101,7 @@ export function _search(
         }),
         answer: response.data.answer,
         requestId: response.data.request_id,
+        ...(response.data.usage !== undefined && { usage: response.data.usage }),
         ...(response.data.auto_parameters && {
           autoParameters: {
             includeDomains: response.data.auto_parameters?.include_domains,
