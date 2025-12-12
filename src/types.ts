@@ -129,6 +129,8 @@ export type TavilyExtractOptions = {
   timeout?: number;
   includeFavicon?: boolean;
   includeUsage?: boolean;
+  query?: string;
+  chunksPerSource?: number;
   [key: string]: any;
 };
 
