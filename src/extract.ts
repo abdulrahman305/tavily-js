@@ -15,7 +15,7 @@ export function _extract(
     urls: Array<string>,
     options: Partial<TavilyExtractOptions> = {}
   ) {
-    const { includeImages, extractDepth, format, timeout, includeFavicon, query, chunksPerSource, ...kwargs } = options;
+    const { includeImages, extractDepth, format, timeout, includeFavicon, includeUsage, query, chunksPerSource, ...kwargs } = options;
 
     const requestTimeout = timeout ?? 30; // Default to 30s
 
