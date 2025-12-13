@@ -31,6 +31,7 @@ export function _crawl(
       timeout,
       includeFavicon,
       includeUsage,
+      chunksPerSource,
       ...kwargs
     } = options;
 
@@ -56,6 +57,7 @@ export function _crawl(
           timeout,
           include_favicon: includeFavicon,
           include_usage: includeUsage,
+          chunks_per_source: chunksPerSource,
           ...kwargs,
         },
         apiKey,
