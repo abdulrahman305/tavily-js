@@ -1,16 +1,12 @@
 import {
   TavilyMapOptions,
   TavilyMapFunction,
-  TavilyProxyOptions,
+  TavilyRequestConfig,
 } from "./types";
 import { post, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
 
-export function _map(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyMapFunction {
+export function _map(requestConfig: TavilyRequestConfig): TavilyMapFunction {
   return async function map(
     url: string,
     options: Partial<TavilyMapOptions> = {}
@@ -50,10 +46,8 @@ export function _map(
           include_usage: includeUsage,
           ...kwargs,
         },
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
 
       return {

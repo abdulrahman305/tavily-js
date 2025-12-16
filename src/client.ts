@@ -1,4 +1,4 @@
-import { TavilyClientOptions, TavilyClient, TavilyProxyOptions } from "./types";
+import { TavilyClientOptions, TavilyClient, TavilyProxyOptions, TavilyRequestConfig } from "./types";
 import { _search, _searchQNA, _searchContext } from "./search";
 import { _extract } from "./extract";
 import { _crawl } from "./crawl";
@@ -18,7 +18,6 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
 
     return Object.keys(result).length > 0 ? result : undefined;
   })();
-  const apiBaseURL = options?.apiBaseURL;
 
   if (!apiKey) {
     throw new Error(
@@ -26,14 +25,21 @@ export function tavily(options?: TavilyClientOptions): TavilyClient {
     );
   }
 
+  const requestConfig: TavilyRequestConfig = {
+    apiKey,
+    proxies,
+    apiBaseURL: options?.apiBaseURL,
+    clientSource: options?.clientSource,
+  };
+
   return {
-    search: _search(apiKey, proxies, apiBaseURL),
-    extract: _extract(apiKey, proxies, apiBaseURL),
-    searchQNA: _searchQNA(apiKey, proxies, apiBaseURL),
-    searchContext: _searchContext(apiKey, proxies, apiBaseURL),
-    crawl: _crawl(apiKey, proxies, apiBaseURL),
-    map: _map(apiKey, proxies, apiBaseURL),
-    research: _research(apiKey, proxies, apiBaseURL),
-    getResearch: _getResearch(apiKey, proxies, apiBaseURL),
+    search: _search(requestConfig),
+    extract: _extract(requestConfig),
+    searchQNA: _searchQNA(requestConfig),
+    searchContext: _searchContext(requestConfig),
+    crawl: _crawl(requestConfig),
+    map: _map(requestConfig),
+    research: _research(requestConfig),
+    getResearch: _getResearch(requestConfig),
   };
 }

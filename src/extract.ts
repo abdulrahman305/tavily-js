@@ -2,15 +2,11 @@ import { AxiosError, AxiosResponse } from "axios";
 import {
   TavilyExtractOptions,
   TavilyExtractFunction,
-  TavilyProxyOptions,
+  TavilyRequestConfig,
 } from "./types";
 import { handleRequestError, handleTimeoutError, post } from "./utils";
 
-export function _extract(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyExtractFunction {
+export function _extract(requestConfig: TavilyRequestConfig): TavilyExtractFunction {
   return async function extract(
     urls: Array<string>,
     options: Partial<TavilyExtractOptions> = {}
@@ -34,10 +30,8 @@ export function _extract(
           chunks_per_source: chunksPerSource,
           ...kwargs,
         },
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
 
       return {

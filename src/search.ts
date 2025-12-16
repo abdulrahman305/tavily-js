@@ -4,7 +4,7 @@ import {
   TavilySearchFuncton,
   TavilyQNASearchFuncton,
   TavilyContextSearchFuncton,
-  TavilyProxyOptions,
+  TavilyRequestConfig,
 } from "./types";
 import {
   post,
@@ -14,11 +14,7 @@ import {
   handleTimeoutError,
 } from "./utils";
 
-export function _search(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilySearchFuncton {
+export function _search(requestConfig: TavilyRequestConfig): TavilySearchFuncton {
   return async function search(
     query: string,
     options: Partial<TavilySearchOptions> = {}
@@ -73,10 +69,8 @@ export function _search(
           include_usage: includeUsage,
           ...kwargs,
         },
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
 
       return {
@@ -136,11 +130,7 @@ export function _search(
  * const result = await client.search(query, { includeAnswer: true });
  * const answer = result.answer;
  */
-export function _searchQNA(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyQNASearchFuncton {
+export function _searchQNA(requestConfig: TavilyRequestConfig): TavilyQNASearchFuncton {
   return async function searchQNA(
     query: string,
     options: TavilySearchOptions = {}
@@ -167,10 +157,8 @@ export function _searchQNA(
           chunks_per_source: options.chunksPerSource,
           include_favicon: options.includeFavicon,
         },
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
 
       const answer = response.data.answer;
@@ -200,11 +188,7 @@ export function _searchQNA(
  * const result = await client.search(query, options);
  * const context = result.results.map(r => ({ url: r.url, content: r.content }));
  */
-export function _searchContext(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyContextSearchFuncton {
+export function _searchContext(requestConfig: TavilyRequestConfig): TavilyContextSearchFuncton {
   return async function searchContext(
     query: string,
     options: TavilySearchOptions = {}
@@ -230,10 +214,8 @@ export function _searchContext(
           chunks_per_source: options.chunksPerSource,
           include_favicon: options.includeFavicon,
         },
-        apiKey,
-        proxies,
-        timeout,
-        apiBaseURL
+        requestConfig,
+        timeout
       );
 
       const sources = response.data?.results || [];
