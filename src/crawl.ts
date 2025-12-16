@@ -1,16 +1,12 @@
 import {
   TavilyCrawlOptions,
   TavilyCrawlFunction,
-  TavilyProxyOptions,
+  TavilyRequestConfig,
 } from "./types";
 import { post, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
 
-export function _crawl(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyCrawlFunction {
+export function _crawl(requestConfig: TavilyRequestConfig): TavilyCrawlFunction {
   return async function crawl(
     url: string,
     options: Partial<TavilyCrawlOptions> = {}
@@ -60,10 +56,8 @@ export function _crawl(
           chunks_per_source: chunksPerSource,
           ...kwargs,
         },
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
 
       return {

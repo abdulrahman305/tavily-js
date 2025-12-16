@@ -2,7 +2,7 @@ import {
   TavilyResearchOptions,
   TavilyResearchFunction,
   TavilyGetResearchFunction,
-  TavilyProxyOptions,
+  TavilyRequestConfig,
   TavilyGetResearchIncompleteStatusResponse,
   TavilyGetResearchResponse,
 } from "./types";
@@ -10,11 +10,7 @@ import { post, get, handleRequestError, handleTimeoutError } from "./utils";
 import { AxiosError, AxiosResponse } from "axios";
 import { Readable } from "stream";
 
-export function _research(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyResearchFunction {
+export function _research(requestConfig: TavilyRequestConfig): TavilyResearchFunction {
   return async function research(
     input: string,
     options: Partial<TavilyResearchOptions> = {}
@@ -34,10 +30,8 @@ export function _research(
             citation_format: citationFormat,
             ...kwargs,
           },
-          apiKey,
-          proxies,
+          requestConfig,
           timeout,
-          apiBaseURL,
           "stream"
         );
 
@@ -86,10 +80,8 @@ export function _research(
             citation_format: citationFormat,
             ...kwargs,
           },
-          apiKey,
-          proxies,
-          timeout,
-          apiBaseURL
+          requestConfig,
+          timeout
         );
 
         return {
@@ -117,21 +109,15 @@ export function _research(
   };
 }
 
-export function _getResearch(
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  apiBaseURL?: string
-): TavilyGetResearchFunction {
+export function _getResearch(requestConfig: TavilyRequestConfig): TavilyGetResearchFunction {
   return async function getResearch(requestId: string) {
     const requestTimeout = 60; // Default timeout for GET requests
 
     try {
       const response = await get(
         `research/${requestId}`,
-        apiKey,
-        proxies,
-        requestTimeout,
-        apiBaseURL
+        requestConfig,
+        requestTimeout
       );
       return response.data as
         | TavilyGetResearchResponse

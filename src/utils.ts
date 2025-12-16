@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { encodingForModel, TiktokenModel } from "js-tiktoken";
-import { TavilyProxyOptions } from "./types";
+import { TavilyRequestConfig } from "./types";
 import { HttpsProxyAgent } from "https-proxy-agent";
 
 const BASE_URL = "https://api.tavily.com";
@@ -15,19 +15,18 @@ type TavilyErrorData = {
 export async function post(
   endpoint: string,
   body: any,
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
+  requestConfig: TavilyRequestConfig,
   timeout?: number,
-  apiBaseURL?: string,
   responseType?: AxiosRequestConfig['responseType']
 ): Promise<AxiosResponse> {
+  const { apiKey, proxies, apiBaseURL, clientSource } = requestConfig;
   const requestTimeout = endpoint === "research" ? timeout : timeout ?? 60; // Research endpoint has no default timeout
 
   const url = `${apiBaseURL || BASE_URL}/${endpoint}`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
-    "X-Client-Source": "tavily-js",
+    "X-Client-Source": clientSource || "tavily-js",
   };
 
   const config: AxiosRequestConfig = { headers };
@@ -56,16 +55,15 @@ export async function post(
 
 export async function get(
   endpoint: string,
-  apiKey: string,
-  proxies?: TavilyProxyOptions,
-  timeout?: number,
-  apiBaseURL?: string
+  requestConfig: TavilyRequestConfig,
+  timeout?: number
 ): Promise<AxiosResponse> {
+  const { apiKey, proxies, apiBaseURL, clientSource } = requestConfig;
   const url = `${apiBaseURL || BASE_URL}/${endpoint}`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiKey}`,
-    "X-Client-Source": "tavily-js",
+    "X-Client-Source": clientSource || "tavily-js",
   };
 
   const requestTimeout = endpoint.includes("research") ? timeout : timeout ?? 60; // Research endpoint has no default timeout
