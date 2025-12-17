@@ -80,7 +80,7 @@ export type TavilyRequestConfig = {
 };
 
 export type TavilySearchOptions = {
-  searchDepth?: "basic" | "advanced";
+  searchDepth?: "basic" | "advanced" | "fast" | "ultra-fast";
   topic?: "general" | "news" | "finance";
   days?: number;
   maxResults?: number;
